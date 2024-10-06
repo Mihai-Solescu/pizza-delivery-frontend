@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import './Login.css'; // Custom CSS for styling
 import pizzalogo from '../assets/pizzalogo.png'; // Import the pizza logo
@@ -48,10 +48,11 @@ function Login() {
           <div className="form-group">
             <input
               type="text"
-              placeholder="UserName"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="form-control"
+              required // Ensures the field is filled before submission
             />
           </div>
           <div className="form-group">
@@ -61,6 +62,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-control"
+              required // Ensures the field is filled before submission
             />
           </div>
           <button type="submit" className="btn-login">

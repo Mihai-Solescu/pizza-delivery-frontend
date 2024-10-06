@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Register.css'; // Custom CSS for styling
 
 function Register() {
@@ -11,14 +12,16 @@ function Register() {
   const [postalCode, setPostalCode] = useState('');
   const [city, setCity] = useState('');
   const [password, setPassword] = useState('');
-  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
-  const [preferences, setPreferences] = useState({});
+  const [error, setError] = useState(''); // State to store registration error
+
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Send registration data to the server
     try {
+      // First register the user
       await axios.post('http://localhost:8000/customers/register/', {
         first_name: firstName,
         last_name: lastName,
@@ -30,80 +33,29 @@ function Register() {
         password,
       });
 
-      // If registration is successful, show the questionnaire
-      setShowQuestionnaire(true);
+      // If registration is successful, log the user in immediately
+      const response = await axios.post('http://localhost:8000/customers/login/', {
+        username,
+        password,
+      });
+
+      // Get the tokens from the response and store them
+      const { refresh, access } = response.data;  // Destructuring the response data
+      localStorage.setItem('accessToken', access);  // Save access token
+      localStorage.setItem('refreshToken', refresh);  // Save refresh token
+
+      // Navigate to the preferences page or another desired page
+      navigate('/preferences');
     } catch (error) {
-      console.error('Error registering:', error);
+      console.error('Error during registration or login:', error);
+      setError('Registration failed. Please try again.'); // Set error message
     }
   };
-
-  const handleQuestionnaireSubmit = async () => {
-    // Send the preferences data to the server
-    try {
-      await axios.post('http://localhost:8000/customers/preferences/', preferences);
-      alert('Preferences saved!');
-    } catch (error) {
-      console.error('Error submitting preferences:', error);
-    }
-  };
-
-  if (showQuestionnaire) {
-    // Render the questionnaire form if registration is successful
-    return (
-      <div className="questionnaire-container">
-        <h1>Questionnaire</h1>
-        <form onSubmit={handleQuestionnaireSubmit}>
-          <div className="form-group">
-            <label>
-              Do you prefer vegetarian pizzas?
-              <input
-                type="radio"
-                name="vegetarian"
-                value="yes"
-                onChange={(e) => setPreferences({ ...preferences, vegetarian: e.target.value })}
-              /> Yes
-              <input
-                type="radio"
-                name="vegetarian"
-                value="no"
-                onChange={(e) => setPreferences({ ...preferences, vegetarian: e.target.value })}
-              /> No
-            </label>
-          </div>
-
-          <div className="form-group">
-            <label>
-              Favorite toppings:
-              <input
-                type="checkbox"
-                name="toppings"
-                value="cheese"
-                onChange={(e) => setPreferences({ ...preferences, cheese: e.target.checked })}
-              /> Cheese
-              <input
-                type="checkbox"
-                name="toppings"
-                value="pepperoni"
-                onChange={(e) => setPreferences({ ...preferences, pepperoni: e.target.checked })}
-              /> Pepperoni
-              <input
-                type="checkbox"
-                name="toppings"
-                value="mushrooms"
-                onChange={(e) => setPreferences({ ...preferences, mushrooms: e.target.checked })}
-              /> Mushrooms
-            </label>
-          </div>
-
-          <button type="submit" className="btn-questionnaire">Submit Preferences</button>
-        </form>
-      </div>
-    );
-  }
 
   return (
     <div className="register-container">
       <h1 className="register-heading">Account Creation</h1>
+      {error && <p className="register-error">{error}</p>} {/* Display error if exists */}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input

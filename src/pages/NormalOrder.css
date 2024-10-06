@@ -1,87 +1,102 @@
+/* NormalOrder.css */
+
 /* Container for the normal order page */
 .normal-order-page {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-  }
-  
-  /* Hamburger menu styling */
-  .hamburger-menu {
-    position: relative;
-  }
-  
-  .menu-icon {
-    font-size: 30px;
-    cursor: pointer;
-  }
-  
-  .menu-content {
-    position: absolute;
-    top: 40px;
-    left: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-  }
-  
-  .menu-content a {
-    display: block;
-    margin: 10px 0;
-    text-decoration: none;
-    color: black;
-  }
-  
-  /* Header with username and cart */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .username {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .shopping-cart {
-    font-size: 24px;
-  }
-  
-  .shopping-cart a {
-    text-decoration: none;
-    color: black;
-  }
-  
-  /* Pizza list styling */
-  .pizza-list {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  /* Navigation buttons */
-  .bottom-nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    margin-top: 20px;
-  }
-  
-  .nav-btn {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    width: 45%;
-    text-align: center;
-  }
-  
-  .nav-btn:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Wrapper for the main content */
+.wrapper {
+  background-color: white; /* White background for the wrapper */
+  padding: 20px; /* Inner spacing */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  max-width: 400px; /* Set maximum width */
+  width: 100%; /* Full width for smaller screens */
+  margin: 0 auto; /* Center the wrapper */
+}
+
+/* Hamburger menu styling */
+.hamburger-menu {
+  position: relative;
+}
+
+.menu-icon {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.menu-content {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.menu-content a {
+  display: block;
+  margin: 10px 0;
+  text-decoration: none;
+  color: black;
+}
+
+/* Header with username and cart */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.username {
+  font-size: 18px; /* Adjust the font size for the username */
+  font-weight: bold;
+  text-align: center; /* Center the username */
+  flex: 1; /* Allow the username to grow */
+}
+
+.shopping-cart {
+  font-size: 24px;
+}
+
+.shopping-cart a {
+  text-decoration: none;
+  color: black;
+}
+
+/* Pizza list styling */
+.pizza-list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Navigation buttons */
+.bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+.nav-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  width: 45%;
+  text-align: center;
+  margin: 0 5px; /* Add space between buttons */
+}
+
+.nav-btn:hover {
+  background-color: #0056b3;
+}

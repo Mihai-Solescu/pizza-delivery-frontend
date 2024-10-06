@@ -1,0 +1,126 @@
+/* Container for the overall account page wrapper */
+.account-wrapper {
+  background-color: white; /* White background for the wrapper */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  padding: 20px; /* Inner spacing */
+  max-width: 300px; /* Set a maximum width for the account wrapper */
+  width: 100%; /* Full width for smaller screens */
+  margin: 0 auto; /* Center the wrapper */
+}
+
+/* Container for the account page */
+.account-page {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center contents horizontally */
+}
+
+/* Hamburger menu styling */
+.hamburger-menu {
+  position: relative;
+}
+
+.menu-icon {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.menu-content {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.menu-content a {
+  display: block;
+  margin: 10px 0;
+  text-decoration: none;
+  color: black;
+}
+
+/* Header with username and cart */
+.header {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center;
+  width: 100%; /* Full width for proper alignment */
+  position: relative; /* Allow absolute positioning of the menu */
+  margin-bottom: 20px;
+  padding: 10px 0; /* Add padding for spacing */
+}
+
+.hamburger-menu {
+  position: absolute; /* Make it absolute to position it in the top left */
+  top: 10px; /* Adjust vertical position */
+  left: 10px; /* Adjust horizontal position */
+}
+
+.username {
+  font-size: 22px; /* Adjust font size for better visibility */
+  font-weight: bold;
+  margin: 0 20px; /* Space around the username */
+  text-align: center; /* Center align username */
+  flex-grow: 1; /* Allow it to take up remaining space */
+}
+
+.shopping-cart {
+  position: absolute; /* Make it absolute to position it in the top right */
+  top: 10px; /* Adjust vertical position */
+  right: 10px; /* Adjust horizontal position */
+}
+
+.shopping-cart a {
+  text-decoration: none;
+  color: black;
+  font-size: 24px; /* Adjust font size for better visibility */
+}
+
+/* User information styling */
+.user-info {
+  margin-top: 20px;
+  padding: 20px; /* Increased padding for more spacing */
+  background-color: #f9f9f9; /* Light background for better readability */
+  border-radius: 5px; /* Slight rounding of corners */
+  border: 1px solid #ddd; /* Light border */
+  width: 100%; /* Ensure full width */
+  max-width: 300px; /* Restrict maximum width */
+}
+
+.user-info h2 {
+  margin-bottom: 10px; /* Space below the heading */
+}
+
+.user-info p {
+  margin: 5px 0; /* Space between paragraphs */
+  font-size: 16px; /* Decrease font size */
+}
+
+/* Navigation buttons */
+.bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+.nav-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  width: 45%;
+  text-align: center;
+  margin: 0 5px; /* Add space between buttons */
+}
+
+.nav-btn:hover {
+  background-color: #0056b3;
+}

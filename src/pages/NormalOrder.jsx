@@ -54,27 +54,27 @@ function NormalOrder() {
 
   return (
     <div className="normal-order-page">
-      {/* Hamburger menu */}
-      <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
-        <div className="menu-icon" onClick={toggleMenu}>
-          ☰
-        </div>
-        {menuOpen && (
-          <div className="menu-content">
-            <Link to="/account">Account</Link>
-            <Link to="/settings">Settings</Link>
-            <Link to="/preferences">Preferences</Link>
+      {/* Wrapper for the content */}
+      <div className="wrapper">
+        {/* Header with user info and hamburger menu */}
+        <div className="header">
+          <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
+            <div className="menu-icon" onClick={toggleMenu}>
+              ☰
+            </div>
+            {menuOpen && (
+              <div className="menu-content">
+                <Link to="/account">Account</Link>
+                <Link to="/settings">Settings</Link>
+                <Link to="/preferences">Preferences</Link>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* User info and shopping cart */}
-      <div className="header">
-        <div className="username">Username</div>
-        <div className="shopping-cart">
-          <Link to="/cart">🛒</Link>
+          <div className="username">Username</div>
+          <div className="shopping-cart">
+            <Link to="/cart">🛒</Link>
+          </div>
         </div>
-      </div>
 
       {/* Pizza list */}
       <div className="pizza-list">
@@ -93,10 +93,11 @@ function NormalOrder() {
         ))}
       </div>
 
-      {/* Navigation buttons */}
-      <div className="bottom-nav">
-        <Link to="/normalorder" className="nav-btn">Normal</Link>
-        <Link to="/quickorder" className="nav-btn">Quick</Link>
+        {/* Navigation buttons moved to footer */}
+        <div className="bottom-nav">
+          <Link to="/normalorder" className="nav-btn">Normal</Link>
+          <Link to="/quickorder" className="nav-btn">Quick</Link>
+        </div>
       </div>
     </div>
   );
