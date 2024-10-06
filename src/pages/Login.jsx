@@ -19,6 +19,9 @@ function Login() {
 
         // Get the 'refresh' and 'access' tokens from the response and store them individually
         const { refresh, access } = response.data;  // Destructuring the response data
+        
+        console.log('Access Token:', access);
+        console.log('Refresh Token:', refresh);
 
         // Store the tokens separately in localStorage
         localStorage.setItem('accessToken', access);  // Save access token
