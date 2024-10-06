@@ -1,0 +1,65 @@
+/* Container for the login page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 100% of the viewport height */
+    background-color: #f5f5f5;
+    padding: 20px; /* Optional, to avoid elements getting too close to the edges */
+    box-sizing: border-box;
+  }
+  
+  /* Box containing the login form */
+  .login-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+    max-width: 100%; /* Responsive for smaller screens */
+  }
+  
+  /* Logo styling */
+  .login-logo {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  /* Heading */
+  .login-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Form inputs */
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Button */
+  .btn-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffcc00;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Link for creating a new account */
+  .create-account {
+    margin-top: 20px;
+  }
+  
+  .create-account a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
