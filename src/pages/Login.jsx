@@ -11,20 +11,23 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Send login request to the Django backend
-      const response = await axios.post('http://localhost:8000/customers/login/', {
-        username,
-        password,
-      });
+        // Send login request to the Django backend
+        const response = await axios.post('http://localhost:8000/customers/login/', {
+            username,
+            password,
+        });
 
-      // Get the token from the response and store it
-      const { access } = response.data; // assuming access token is returned
-      localStorage.setItem('token', access);
+        // Get the 'refresh' and 'access' tokens from the response and store them individually
+        const { refresh, access } = response.data;  // Destructuring the response data
 
-      // Redirect the user to the homepage or other page
-      window.location.href = '/';
+        // Store the tokens separately in localStorage
+        localStorage.setItem('accessToken', access);  // Save access token
+        localStorage.setItem('refreshToken', refresh);  // Save refresh token
+
+        // Redirect the user to the homepage or another page after successful login
+        window.location.href = '/';
     } catch (err) {
-      setError('Invalid credentials. Please try again.');
+        setError('Invalid credentials. Please try again.');
     }
   };
 
