@@ -22,15 +22,14 @@ function Register() {
     // Send registration data to the server
     try {
       // First register the user
+      const address_data = [city, address, postalCode]
       await axios.post('http://localhost:8000/customers/register/', {
         first_name: firstName,
         last_name: lastName,
-        username,
-        email,
-        address,
-        postal_code: postalCode,
-        city,
-        password,
+        username: username,
+        password: password,
+        email: email,
+        address: address_data.join(', '),
       });
 
       // If registration is successful, log the user in immediately
