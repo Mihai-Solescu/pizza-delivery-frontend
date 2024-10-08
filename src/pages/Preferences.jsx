@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Preferences.css'; // Custom CSS for styling
 
@@ -38,6 +38,50 @@ const Preferences = () => {
     budget_range: 7.00, // default to 7
   });
 
+  // Fetch user preferences when the component mounts
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/customers/preferences/', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // Include access token if required
+          },
+        });
+
+        // Transform the response data to fit the preferences model
+        if (response.data) {
+          const responseData = response.data;
+
+          // Create a new preferences object based on the API response
+          const updatedPreferences = {
+            favourite_sauce: responseData.favourite_sauce || 0,
+            cheese_preference: responseData.cheese_preference || 0,
+            toppings: {}, // Initialize empty toppings
+            spiciness_level: responseData.spiciness_level || 0,
+            is_vegetarian: responseData.is_vegetarian || false,
+            is_vegan: responseData.is_vegan || false,
+            pizza_size: responseData.pizza_size || 1,
+            budget_range: responseData.budget_range || 7,
+          };
+
+          // Populate the toppings based on the response data
+          responseData.toppings.forEach(topping => {
+            updatedPreferences.toppings[topping.name] = topping.preference;
+          });
+
+          // Set the updated preferences in state
+          console.log(updatedPreferences);
+          setPreferences(updatedPreferences);
+          console.log(preferences);
+        }
+      } catch (error) {
+        console.error('Error fetching preferences:', error);
+      }
+    };
+
+    fetchPreferences();
+  }, []); // Run only on mount
+
   const handleQuestionnaireSubmit = async (e) => {
     console.log(preferences)
     e.preventDefault(); // Prevent the default form submission
@@ -52,7 +96,7 @@ const Preferences = () => {
         },
       });
       alert('Preferences saved!'); // Alert on successful save
-      window.location.href = '/normalorder';
+      //window.location.href = '/normalorder';
     } catch (error) {
       console.error('Error submitting preferences:', error); // Log any error
     }
