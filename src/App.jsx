@@ -4,6 +4,7 @@ import Register from './pages/Register';
 import NormalOrder from './pages/NormalOrder';
 import Preferences from "./pages/Preferences.jsx";
 import Account from "./pages/Account.jsx";
+import QuickOrder from "./pages/QuickOrder.jsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/normalorder" element={<NormalOrder />} />
         <Route path="/preferences" element={<Preferences />} /> {/* Questionnaire page */}
         <Route path="/account" element={<Account />} />
+        <Route path="/quickorder" element={<QuickOrder />} />
     </Routes>
   );
 }

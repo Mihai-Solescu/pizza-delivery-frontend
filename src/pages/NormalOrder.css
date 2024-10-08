@@ -73,26 +73,35 @@ body {
   margin-left: 10px;
 }
 
-.nav-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  width: 100%; /* Centering the buttons */
+.nav-btn-normal1 {
+  padding: 15px;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  flex: 1; /* Make buttons flexible within the container */
+  text-align: center;
+  font-size: 16px;
 }
 
-.nav-btn {
+.nav-btn-quick1 {
   padding: 15px;
   background-color: #f8f8f8;
   color: #333;
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s ease;
-  width: 200px; /* Make the buttons wider */
+  flex: 1; /* Make buttons flexible within the container */
   text-align: center;
   font-size: 16px;
 }
 
-.nav-btn:hover {
+.nav-btn-normal1:hover {
+  background-color: #e0e0e0;
+}
+
+.nav-btn-quick1:hover {
   background-color: #e0e0e0;
 }
 
@@ -100,6 +109,7 @@ body {
 .wrapper {
   width: 100%; /* Full width to hold pizza items */
   max-width: 900px; /* Limit the width of the content */
+  margin-top: 5%;
 }
 
 /* Pizza List styling */
@@ -158,6 +168,7 @@ body {
   cursor: pointer;
   border-radius: 5px;
   margin-left: 10px;
+  margin-top: 5px;
   transition: background-color 0.3s ease;
   font-size: 14px;
 }

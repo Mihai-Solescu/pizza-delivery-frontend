@@ -1,0 +1,124 @@
+/* Root container */
+#root {
+  width: 100%; /* Full width of the viewport */
+  max-width: 1200px; /* Limit the maximum width */
+  display: flex;
+  justify-content: center; /* Center the main content */
+}
+
+/* QuickOrder page container */
+.quick-page {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  padding-top: 80px; /* Add top padding for the fixed header */
+}
+
+/* Top bar styling with hamburger menu, username, and shopping cart */
+.top-bar {
+  position: fixed; /* Make the header fixed */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  right: 0; /* Align to the right */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+/* Grouping the hamburger menu and shopping cart button on the left side */
+.top-left {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-menu .menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.shopping-cart {
+  margin-left: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 60%; /* Make the buttons take 60% of the screen width */
+  margin: 0 auto; /* Center the buttons */
+}
+
+.nav-btn-normal {
+  padding: 15px;
+  background-color: #f8f8f8;
+  color: #333;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  flex: 1; /* Make buttons flexible within the container */
+  text-align: center;
+  font-size: 16px;
+}
+
+.nav-btn-quick {
+  padding: 15px;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  flex: 1; /* Make buttons flexible within the container */
+  text-align: center;
+  font-size: 16px;
+}
+
+.nav-btn-normal:hover {
+  background-color: #e0e0e0;
+}
+
+.nav-btn-quick:hover {
+  background-color: #e0e0e0;
+}
+
+.pizza-card-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.pizza-card-info {
+  flex-grow: 1;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pizza-card-info h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.pizza-card-info p {
+  margin: 5px 0;
+  color: green;
+  font-size: 16px;
+}

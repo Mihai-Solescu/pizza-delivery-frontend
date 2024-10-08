@@ -11,6 +11,7 @@
   .login-box {
     background-color: white;
     padding: 30px;
+    padding-right: 70px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -20,12 +21,14 @@
 
   /* Logo styling */
   .login-logo {
+    margin-left: 40px;
     width: 150px;
     margin-bottom: 20px;
   }
 
   /* Heading */
   .login-heading {
+    margin-left: 40px;
     font-size: 24px;
     margin-bottom: 20px;
   }
@@ -54,6 +57,7 @@
 
   /* Link for creating a new account */
   .create-account {
+    margin-left: 40px;
     margin-top: 20px;
   }
 

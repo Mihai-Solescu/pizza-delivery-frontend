@@ -96,7 +96,7 @@ const Preferences = () => {
         },
       });
       alert('Preferences saved!'); // Alert on successful save
-      //window.location.href = '/normalorder';
+      window.location.href = '/normalorder';
     } catch (error) {
       console.error('Error submitting preferences:', error); // Log any error
     }

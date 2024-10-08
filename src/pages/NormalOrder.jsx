@@ -92,26 +92,26 @@ function NormalOrder() {
               ☰
             </div>
             {menuOpen && (
-              <div className="menu-content">
-                <Link to="/account">Account</Link>
-                <Link to="/settings">Settings</Link>
-                <Link to="/preferences">Preferences</Link>
-              </div>
+                <div className="menu-content">
+                  <Link to="/account">Account</Link>
+                  <Link to="/settings">Settings</Link>
+                  <Link to="/preferences">Preferences</Link>
+                </div>
             )}
           </div>
           {/* Shopping Cart Icon */}
           <div className="shopping-cart">
             <Link to="/cart">🛒</Link>
           </div>
-        </div>
+          <div className="username">{localStorage.getItem("userName")}</div>
 
-        <div className="username">Username</div>
+        </div>
         <div className="nav-buttons">
-          <Link to="/normalorder" className="nav-btn">Normal</Link>
-          <Link to="/quickorder" className="nav-btn">Quick</Link>
+          <Link to="/normalorder" className="nav-btn-normal1">Normal</Link>
+          <Link to="/quickorder" className="nav-btn-quick1">Quick</Link>
         </div>
       </div>
-      
+
       <div className="wrapper">
         {/* Pizza list */}
         <div className="pizza-list">
