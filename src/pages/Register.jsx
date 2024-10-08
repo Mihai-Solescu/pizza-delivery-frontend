@@ -40,6 +40,7 @@ function Register() {
 
       // Get the tokens from the response and store them
       const { refresh, access } = response.data;  // Destructuring the response data
+      localStorage.setItem('userName', username);
       localStorage.setItem('accessToken', access);  // Save access token
       localStorage.setItem('refreshToken', refresh);  // Save refresh token
 

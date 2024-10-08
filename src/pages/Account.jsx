@@ -72,8 +72,8 @@ const Account = () => {
         <h2>User Information</h2>
         <div className="user-info">
           <p><strong>Username:</strong> {userInfo.username}</p>
-          <p><strong>First name:</strong> {userInfo.username}</p>
-          <p><strong>Last name:</strong> {userInfo.lastname}</p>
+          <p><strong>First name:</strong> {userInfo.first_name}</p>
+          <p><strong>Last name:</strong> {userInfo.last_name}</p>
           <p><strong>Email:</strong> {userInfo.email}</p>
           <p><strong>Address:</strong> {userInfo.address}</p>
         </div>
