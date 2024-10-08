@@ -8,9 +8,10 @@ import Account from "./pages/Account.jsx";
 function App() {
   return (
     <Routes>
-        <Route path="/" element={<NormalOrder />} />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/normalorder" element={<NormalOrder />} />
         <Route path="/preferences" element={<Preferences />} /> {/* Questionnaire page */}
         <Route path="/account" element={<Account />} />
     </Routes>

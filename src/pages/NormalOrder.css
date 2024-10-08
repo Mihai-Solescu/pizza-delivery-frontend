@@ -1,102 +1,220 @@
-/* NormalOrder.css */
+/* Body styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: flex-start; /* Ensures content starts from the top */
+  min-height: 100vh; /* Full height of the viewport */
+}
 
-/* Container for the normal order page */
+/* Root container */
+#root {
+  width: 100%; /* Full width of the viewport */
+  max-width: 1200px; /* Limit the maximum width */
+  display: flex;
+  justify-content: center; /* Center the main content */
+}
+
+/* NormalOrder page container */
 .normal-order-page {
+  width: 100%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 20px;
 }
 
-/* Wrapper for the main content */
-.wrapper {
-  background-color: white; /* White background for the wrapper */
-  padding: 20px; /* Inner spacing */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-  max-width: 400px; /* Set maximum width */
-  width: 100%; /* Full width for smaller screens */
-  margin: 0 auto; /* Center the wrapper */
+
+.normal-order-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto; /* Center the content horizontally */
 }
 
-/* Hamburger menu styling */
-.hamburger-menu {
-  position: relative;
-}
-
-.menu-icon {
-  font-size: 30px;
-  cursor: pointer;
-}
-
-.menu-content {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-}
-
-.menu-content a {
-  display: block;
-  margin: 10px 0;
-  text-decoration: none;
-  color: black;
-}
-
-/* Header with username and cart */
-.header {
+/* Top bar styling with hamburger menu, username, and shopping cart */
+.top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  background-color: white;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
-.username {
-  font-size: 18px; /* Adjust the font size for the username */
-  font-weight: bold;
-  text-align: center; /* Center the username */
-  flex: 1; /* Allow the username to grow */
+/* Grouping the hamburger menu and shopping cart button on the left side */
+.top-left {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-menu .menu-icon {
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .shopping-cart {
+  margin-left: 15px;
   font-size: 24px;
+  cursor: pointer;
 }
 
-.shopping-cart a {
-  text-decoration: none;
-  color: black;
+.username {
+  font-weight: bold;
+  font-size: 18px;
+  margin-left: 10px;
 }
 
-/* Pizza list styling */
-.pizza-list {
-  flex-grow: 1;
+.nav-buttons {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 20px;
-}
-
-/* Navigation buttons */
-.bottom-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-top: 1px solid #ddd;
-  margin-top: 20px;
+  width: 100%; /* Centering the buttons */
 }
 
 .nav-btn {
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 15px;
+  background-color: #f8f8f8;
+  color: #333;
   border-radius: 5px;
   text-decoration: none;
-  width: 45%;
+  transition: background-color 0.3s ease;
+  width: 200px; /* Make the buttons wider */
   text-align: center;
-  margin: 0 5px; /* Add space between buttons */
+  font-size: 16px;
 }
 
 .nav-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Wrapper for pizza list content */
+.wrapper {
+  width: 100%; /* Full width to hold pizza items */
+  max-width: 900px; /* Limit the width of the content */
+}
+
+/* Pizza List styling */
+.pizza-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Styling for each pizza card */
+.pizza-item-card {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  justify-content: space-between; /* Evenly distribute items within each pizza card */
+}
+
+.pizza-card-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.pizza-card-info {
+  flex-grow: 1;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pizza-card-info h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.pizza-card-info p {
+  margin: 5px 0;
+  color: green;
+  font-size: 16px;
+}
+
+/* Button styling for More Info and Add to Cart buttons */
+.more-info-btn,
+.add-to-cart-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.more-info-btn:hover,
+.add-to-cart-btn:hover {
   background-color: #0056b3;
+}
+
+/* Modal Popup styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.details-pizza-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.modal-content h1 {
+  margin-top: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
 }
