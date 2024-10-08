@@ -1,12 +1,15 @@
-/* Container for the overall account page wrapper */
+/* Account wrapper for the entire page */
 .account-wrapper {
-  background-color: white; /* White background for the wrapper */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-  padding: 20px; /* Inner spacing */
-  max-width: 300px; /* Set a maximum width for the account wrapper */
-  width: 270px; /* Full width for smaller screens */
-  margin-left: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  max-width: 300px; /* Adjust to your desired wrapper width */
+  margin: 0 auto; /* Center the wrapper */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Container for the account page */
@@ -45,37 +48,29 @@
   color: black;
 }
 
-/* Header with username and cart */
+/* Header inside the wrapper */
 .header {
   display: flex;
-  justify-content: center; /* Center content horizontally */
+  background-color: #cccccc;
+  justify-content: center;
   align-items: center;
-  width: 100%; /* Full width for proper alignment */
-  position: relative; /* Allow absolute positioning of the menu */
-  margin-bottom: 20px;
+  text-align: center;
+  width: 310px; /* Full width of the wrapper */
   padding: 10px 0; /* Add padding for spacing */
+  margin-bottom: 20px; /* Space below the header */
+  border-bottom: 1px solid #ddd; /* Optional, adds a bottom border */
 }
 
 .hamburger-menu {
-  position: absolute; /* Make it absolute to position it in the top left */
-  top: 10px; /* Adjust vertical position */
   left: 10px; /* Adjust horizontal position */
 }
 
 .username {
   font-size: 22px; /* Adjust font size for better visibility */
   font-weight: bold;
-  margin: 0 20px; /* Space around the username */
   text-align: center; /* Center align username */
   flex-grow: 1; /* Allow it to take up remaining space */
 }
-
-.shopping-cart {
-  position: absolute; /* Make it absolute to position it in the top right */
-  top: 10px; /* Adjust vertical position */
-  right: 10px; /* Adjust horizontal position */
-}
-
 .shopping-cart a {
   text-decoration: none;
   color: black;
@@ -84,17 +79,12 @@
 
 /* User information styling */
 .user-info {
-  margin-top: 20px;
   padding: 20px; /* Increased padding for more spacing */
   background-color: #f9f9f9; /* Light background for better readability */
   border-radius: 5px; /* Slight rounding of corners */
   border: 1px solid #ddd; /* Light border */
   width: 100%; /* Ensure full width */
   max-width: 300px; /* Restrict maximum width */
-}
-
-.user-info h2 {
-  margin-bottom: 10px; /* Space below the heading */
 }
 
 .user-info p {
