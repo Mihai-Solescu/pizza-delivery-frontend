@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './NormalOrder.css'; // Custom styles for pizza card
+import './NormalOrder.css';
 import vegan_tag from '../assets/vegan_tag.png';
 import vegetarian_tag from '../assets/vegetarian_tag.png';
 import try_tag from '../assets/try_tag.png';
 import rate_tag from '../assets/rate_tag.png';
 import order_tag from '../assets/order_tag.png';
 
-// Modal component for displaying pizza details
 function PizzaDetailsModal({ pizza, onClose }) {
   const defaultPizzaImage = "https://media.istockphoto.com/id/1671506157/nl/foto/slice-of-pizza-melted-cheese-stretches-from-the-piece.jpg?s=2048x2048&w=is&k=20&c=rEGVINGvZneoC6KtYBtB11ySq6cqD6nAhjMdgtyrkIA=";
 
-  if (!pizza) return null; // Don't show the modal if no pizza is selected
+  if (!pizza) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -39,55 +38,85 @@ function PizzaDetailsModal({ pizza, onClose }) {
 
 function NormalOrder() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [pizzas, setPizzas] = useState([]);  // State to hold pizza listings
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null);  // Error state
-  const [selectedPizza, setSelectedPizza] = useState(null);  // Holds the pizza clicked
-  const [showModal, setShowModal] = useState(false); // Controls the modal display
+  const [pizzas, setPizzas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedPizza, setSelectedPizza] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  // Fetch pizza listings from the server when the component mounts
   useEffect(() => {
     const fetchPizzas = async () => {
-      const token = localStorage.getItem('accessToken');  // Get the JWT token from local storage
+      const token = localStorage.getItem('accessToken');
       try {
         const response = await axios.get('http://localhost:8000/menu/pizzalist/', {
           headers: {
-            Authorization: `Bearer ${token}`,  // Include the JWT token in the headers
+            Authorization: `Bearer ${token}`,
           }
         });
-        setPizzas(response.data);  // Set the fetched pizzas to state
-        setLoading(false);  // Set loading to false once data is fetched
+        setPizzas(response.data);
+        setLoading(false);
       } catch (err) {
         setError('Failed to load pizzas');
-        setLoading(false);  // Stop loading even if there's an error
+        setLoading(false);
       }
     };
 
     fetchPizzas();
-  }, []);  // Empty dependency array to only fetch data on component mount
+  }, []);
 
-  // Function to handle pizza click and open the modal
   const handlePizzaClick = (pizza) => {
-    setSelectedPizza(pizza);  // Set the clicked pizza as selected
-    setShowModal(true);  // Show the modal
+    setSelectedPizza(pizza);
+    setShowModal(true);
   };
 
-  // Function to close the modal
   const handleCloseModal = () => {
-    setShowModal(false);  // Hide the modal
-    setSelectedPizza(null);  // Clear selected pizza
+    setShowModal(false);
+    setSelectedPizza(null);
   };
+
+  const handleTagClick = (pizzaId, tagName) => {
+    // Find the pizza in the current state
+  const updatedPizzas = pizzas.map(pizza => {
+    if (pizza.pizza_id === pizzaId) {
+      // Toggle the specific tag
+      const updatedTags = { ...pizza.tags, [tagName]: !pizza.tags[tagName] };
+
+      // Send the POST request to update the tag on the backend
+      const token = localStorage.getItem('accessToken');
+      axios.post(`http://localhost:8000/menu/pizza/${pizzaId}/tags/`, {
+        rate_tag: updatedTags.rate_tag,
+        order_tag: updatedTags.order_tag,
+        try_tag: updatedTags.try_tag,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }).then(response => {
+        console.log(`Tag updated: ${response.data}`);
+      }).catch(err => {
+        console.error(`Error updating tag: ${err}`);
+      });
+
+      // Return the updated pizza with the new tag state
+      return { ...pizza, tags: updatedTags };
+    }
+    return pizza;
+  });
+
+  // Update the pizzas state with the updated tags
+  setPizzas(updatedPizzas);
+};
 
   if (loading) {
-    return <div>Loading pizzas...</div>;  // Show loading message while fetching data
+    return <div>Loading pizzas...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;  // Display error if something goes wrong
+    return <div>{error}</div>;
   }
 
   return (
@@ -106,12 +135,10 @@ function NormalOrder() {
                 </div>
             )}
           </div>
-          {/* Shopping Cart Icon */}
           <div className="shopping-cart">
             <Link to="/cart">🛒</Link>
           </div>
           <div className="username">{localStorage.getItem("userName")}</div>
-
         </div>
         <div className="nav-buttons">
           <Link to="/normalorder" className="nav-btn-normal1">Normal</Link>
@@ -120,7 +147,6 @@ function NormalOrder() {
       </div>
 
       <div className="wrapper">
-        {/* Pizza list */}
         <div className="pizza-list">
           {pizzas.map((pizza, index) => (
             <div key={index} className="pizza-item-card">
@@ -132,11 +158,34 @@ function NormalOrder() {
                     <p>{pizza.price} €</p>
                   </div>
                   <div className="pizza-tags">
-                    <img src={order_tag} alt="order tag"/>
-                    <img src={rate_tag} alt="rate tag"/>
-                    <img src={try_tag} alt="try tag"/>
-                    <img src={vegan_tag} alt="vegan tag"/>
-                    <img src={vegetarian_tag} alt="vegetarian tag"/>
+                    <img
+                      src={order_tag}
+                      alt="order tag"
+                      style={{ opacity: pizza.tags.order_tag ? 1 : 0.1 }}
+                      onClick={() => handleTagClick(pizza.pizza_id, 'order_tag')}
+                    />
+                    <img
+                      src={rate_tag}
+                      alt="rate tag"
+                      style={{ opacity: pizza.tags.rate_tag ? 1 : 0.1 }}
+                      onClick={() => handleTagClick(pizza.pizza_id, 'rate_tag')}
+                    />
+                    <img
+                      src={try_tag}
+                      alt="try tag"
+                      style={{ opacity: pizza.tags.try_tag ? 1 : 0.1 }}
+                      onClick={() => handleTagClick(pizza.pizza_id, 'try_tag')}
+                    />
+                    <img
+                      src={vegan_tag}
+                      alt="vegan tag"
+                      style={{ opacity: pizza.tags.vegan_tag ? 1 : 0.3 }}
+                    />
+                    <img
+                      src={vegetarian_tag}
+                      alt="vegetarian tag"
+                      style={{ opacity: pizza.tags.vegetarian_tag ? 1 : 0.3 }}
+                    />
                   </div>
                 </div>
                 <div className="pizza-card-buttons">
@@ -153,7 +202,6 @@ function NormalOrder() {
         </div>
       </div>
 
-      {/* Show the modal if a pizza is selected */}
       {showModal && <PizzaDetailsModal pizza={selectedPizza} onClose={handleCloseModal} />}
     </div>
   );
