@@ -43,20 +43,110 @@ function NormalOrder() {
   const [error, setError] = useState(null);
   const [selectedPizza, setSelectedPizza] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [preferences, setPreferences] = useState({
+    favourite_sauce: 0, // default to Tomato
+    cheese_preference: 0, // default to Mozzarella
+    // Initialize toppings with a neutral preference (could be 0 for Neutral, 1 for Like, 2 for Dislike)
+    toppings: {
+      pepperoni: 0,
+      mushrooms: 0,
+      onions: 0,
+      olives: 0,
+      sun_dried_tomatoes: 0,
+      bell_peppers: 0,
+      chicken: 0,
+      bacon: 0,
+      ham: 0,
+      sausage: 0,
+      ground_beef: 0,
+      anchovies: 0,
+      pineapple: 0,
+      basil: 0,
+      broccoli: 0,
+      zucchini: 0,
+      garlic: 0,
+      jalapenos: 0,
+      BBQ_sauce: 0,
+      red_peppers: 0,
+      spinach: 0,
+      feta_cheese: 0,
+    },
+    spiciness_level: 0, // default to Mild
+    is_vegetarian: false,
+    is_vegan: false,
+    pizza_size: 1, // default to Medium
+    budget_range: 7.00, // default to 7
+  });
+
+  const [preferencesLoading, setPreferencesLoading] = useState(true);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Fetch preferences
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get('http://localhost:8000/customers/preferences/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Transform the response data to fit the preferences model
+        if (response.data) {
+          const responseData = response.data;
+
+          const updatedPreferences = {
+            favourite_sauce: responseData.favourite_sauce || 0,
+            cheese_preference: responseData.cheese_preference || 0,
+            toppings: {}, // Initialize empty toppings
+            spiciness_level: responseData.spiciness_level || 0,
+            is_vegetarian: responseData.is_vegetarian || false,
+            is_vegan: responseData.is_vegan || false,
+            pizza_size: responseData.pizza_size || 1,
+            budget_range: responseData.budget_range || 7,
+          };
+
+          responseData.toppings.forEach(topping => {
+            updatedPreferences.toppings[topping.name] = topping.preference;
+          });
+
+          setPreferences(updatedPreferences);
+        }
+      } catch (error) {
+        console.error('Error fetching preferences:', error);
+      } finally {
+        setPreferencesLoading(false); // Mark preferences loading as finished
+      }
+    };
+
+    fetchPreferences();
+  }, []);
+
+  // Fetch pizzas based on preferences
   useEffect(() => {
     const fetchPizzas = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await axios.get('http://localhost:8000/menu/pizzalist/', {
+        // Construct query parameters based on preferences
+        const queryParams = new URLSearchParams({
+          filtered: 'false',
+          budget_range: preferences.budget_range,
+          is_vegetarian: preferences.is_vegetarian,
+          is_vegan: preferences.is_vegan,
+        }).toString();
+
+        console.log(queryParams)
+
+        const response = await axios.get(`http://localhost:8000/menu/pizzalist/?${queryParams}`, {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         });
+
         setPizzas(response.data);
         setLoading(false);
       } catch (err) {
@@ -65,8 +155,10 @@ function NormalOrder() {
       }
     };
 
-    fetchPizzas();
-  }, []);
+   if (!preferencesLoading) {
+      fetchPizzas();
+    }
+  }, [preferences, preferencesLoading]); // Dependency array includes preferences
 
   const handlePizzaClick = (pizza) => {
     setSelectedPizza(pizza);

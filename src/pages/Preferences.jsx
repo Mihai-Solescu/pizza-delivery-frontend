@@ -70,7 +70,6 @@ const Preferences = () => {
           });
 
           // Set the updated preferences in state
-          console.log(updatedPreferences);
           setPreferences(updatedPreferences);
           console.log(preferences);
         }
@@ -241,7 +240,7 @@ const Preferences = () => {
               type="number"
               value={preferences.budget_range}
               onChange={(e) => setPreferences({ ...preferences, budget_range: parseFloat(e.target.value) })}
-              step="1"
+              step="0.1"
               min="0"
             />
           </label>
