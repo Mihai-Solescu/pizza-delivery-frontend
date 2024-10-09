@@ -13,7 +13,7 @@ function Questionary_Advise_popup({onClose}) {
           <h3>Preferences will be used by default</h3>
           <div className="option-buttons">
             <button className="refuse-btn"> Skip(use default) </button>
-            <Link to="/quickOrderQuestionarry" className="accept-btn"> Pass </Link>
+            <Link to="/quickquestionary" className="accept-btn"> Pass </Link>
           </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Preferences.css'; // Custom CSS for styling
+import './Questionary.css'; // Custom CSS for styling
 
 const Preferences = () => {
   const [preferences, setPreferences] = useState({
