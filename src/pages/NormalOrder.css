@@ -193,8 +193,10 @@ body {
 }
 
 .modal-content {
+  margin-top: 5px;
   background: white;
   padding: 20px;
+  padding-bottom: 0px;
   border-radius: 10px;
   max-width: 500px;
   width: 100%;
@@ -225,7 +227,33 @@ body {
   margin-top: 0;
 }
 
-ul {
+.ingredient-list{
+  max-height: 120px; /* Set the desired maximum height */
+  overflow-y: auto;  /* Enable vertical scrolling */
+  border: 1px solid #ccc; /* Optional: add a border for better visibility */
+  padding: 10px; /* Optional: add some padding */
+  margin-bottom: 5px;
+}
+
+.ingredient-list ul{
   list-style-type: none;
   padding: 0;
+}
+
+.ingredient-list::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+}
+
+.ingredient-list::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.ingredient-list::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar handle */
+    border-radius: 10px; /* Rounded corners for the handle */
+}
+
+.ingredient-list::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the handle on hover */
 }

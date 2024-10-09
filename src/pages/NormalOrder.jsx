@@ -20,11 +20,13 @@ function PizzaDetailsModal({ pizza, onClose }) {
         <p><strong>Vegan:</strong> {pizza.is_vegan ? 'Yes' : 'No'}</p>
         <p><strong>Vegetarian:</strong> {pizza.is_vegetarian ? 'Yes' : 'No'}</p>
         <p><strong>Ingredients:</strong></p>
-        <ul>
-          {pizza.ingredients.map((ingredient, index) => (
-            <li key={index}>{ingredient.name} - {ingredient.price} €</li>
-          ))}
-        </ul>
+        <div className="ingredient-list">
+            <ul>
+              {pizza.ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient.name} - {ingredient.price} €</li>
+              ))}
+            </ul>
+        </div>
       </div>
     </div>
   );
