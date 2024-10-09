@@ -50,22 +50,24 @@ const Account = () => {
       <div className="account-page">
         {/* Header with user info and hamburger menu */}
         <div className="header">
-          <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
-            <div className="menu-icon" onClick={toggleMenu}>
-              ☰
+          <div className="top-left">
+            <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
+              <div className="menu-icon" onClick={toggleMenu}>
+                ☰
+              </div>
+              {menuOpen && (
+                  <div className="menu-content">
+                    <Link to="/account">Account</Link>
+                    <Link to="/settings">Settings</Link>
+                    <Link to="/preferences">Preferences</Link>
+                  </div>
+              )}
             </div>
-            {menuOpen && (
-                <div className="menu-content">
-                  <Link to="/account">Account</Link>
-                  <Link to="/settings">Settings</Link>
-                  <Link to="/preferences">Preferences</Link>
-                </div>
-            )}
+            <div className="shopping-cart">
+              <Link to="/cart">🛒</Link>
+            </div>
           </div>
           <div className="username">{localStorage.getItem("userName")}</div>
-          <div className="shopping-cart">
-            <Link to="/cart">🛒</Link>
-          </div>
         </div>
 
         {/* Displaying user information */}
