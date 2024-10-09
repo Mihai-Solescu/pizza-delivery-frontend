@@ -158,9 +158,8 @@ body {
   font-size: 16px;
 }
 
-/* Button styling for More Info and Add to Cart buttons */
-.more-info-btn,
-.add-to-cart-btn {
+.pizza-card-buttons button{
+  width: 100%;
   background-color: #007bff;
   color: white;
   border: none;
@@ -171,6 +170,32 @@ body {
   margin-top: 5px;
   transition: background-color 0.3s ease;
   font-size: 14px;
+}
+
+.pizza-item-heading{
+  display: flex;         /* Enable Flexbox layout */
+  justify-content: space-between; /* Space between items, can also use 'center', 'flex-start', etc. */
+  align-items: center;   /* Align items vertically in the center */
+  width: 100%;           /* Full width of the parent */
+  height: fit-content;        /* Set a height for the container */
+}
+
+.pizza-label{
+  width: 100px;
+}
+
+.pizza-tags{
+  right: 0;
+  text-align: right;
+  height: 50px;
+  width: 400px;
+}
+
+.pizza-tags img{
+  padding-right: 10px;
+  padding-left: 10px;
+  width: 60px;
+  height: 45px;
 }
 
 .more-info-btn:hover,

@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './NormalOrder.css'; // Custom styles for pizza card
+import vegan_tag from '../assets/vegan_tag.png';
+import vegetarian_tag from '../assets/vegetarian_tag.png';
+import try_tag from '../assets/try_tag.png';
+import rate_tag from '../assets/rate_tag.png';
+import order_tag from '../assets/order_tag.png';
 
 // Modal component for displaying pizza details
 function PizzaDetailsModal({ pizza, onClose }) {
@@ -121,14 +126,27 @@ function NormalOrder() {
             <div key={index} className="pizza-item-card">
               <img src="https://media.istockphoto.com/id/1671506157/nl/foto/slice-of-pizza-melted-cheese-stretches-from-the-piece.jpg?s=2048x2048&w=is&k=20&c=rEGVINGvZneoC6KtYBtB11ySq6cqD6nAhjMdgtyrkIA=" alt={pizza.name} className="pizza-card-image" />
               <div className="pizza-card-info">
-                <h3>{pizza.name}</h3>
-                <p>{pizza.price} €</p>
-                <button className="more-info-btn" onClick={() => handlePizzaClick(pizza)}>
-                  More Info
-                </button>
-                <button className="add-to-cart-btn">
-                  Add to Cart
-                </button>
+                <div className="pizza-item-heading">
+                  <div className="pizza-label">
+                    <h3>{pizza.name}</h3>
+                    <p>{pizza.price} €</p>
+                  </div>
+                  <div className="pizza-tags">
+                    <img src={order_tag} alt="order tag"/>
+                    <img src={rate_tag} alt="rate tag"/>
+                    <img src={try_tag} alt="try tag"/>
+                    <img src={vegan_tag} alt="vegan tag"/>
+                    <img src={vegetarian_tag} alt="vegetarian tag"/>
+                  </div>
+                </div>
+                <div className="pizza-card-buttons">
+                  <button className="more-info-btn" onClick={() => handlePizzaClick(pizza)}>
+                    More Info
+                  </button>
+                  <button className="add-to-cart-btn">
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
           ))}
