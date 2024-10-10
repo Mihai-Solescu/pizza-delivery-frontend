@@ -11,12 +11,31 @@ import order_tag from '../assets/order_tag.png';
 function PizzaDetailsModal({ pizza, onClose }) {
   const defaultPizzaImage = "https://media.istockphoto.com/id/1671506157/nl/foto/slice-of-pizza-melted-cheese-stretches-from-the-piece.jpg?s=2048x2048&w=is&k=20&c=rEGVINGvZneoC6KtYBtB11ySq6cqD6nAhjMdgtyrkIA=";
 
-   const [userRating, setUserRating] = useState(pizza.user_rating || 0);
+   const [userRating, setUserRating] = useState(pizza.rating || 0);
 
-  const handleRating = (rating) => {
+  const handleRating = async (rating) => {
     setUserRating(rating);
-    // You can also make a request to update the rating on the backend here.
-  };
+
+    const token = localStorage.getItem('accessToken');
+    try {
+        // Send a POST request to update the pizza rating in the backend
+        const response = await axios.post(
+            `http://localhost:8000/menu/pizza/${pizza.pizza_id}/rating`,  // Assuming this is the correct URL for your rating API
+            { rating },  // Send the new rating as part of the request body
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,  // Include the access token for authentication
+                },
+            }
+        );
+
+        // Log success or handle additional logic based on response
+        console.log('Rating updated successfully:', response.data);
+    } catch (error) {
+        console.error('Error updating rating:', error);
+        // Optionally handle error feedback to the user
+    }
+};
 
   if (!pizza) return null;
 
