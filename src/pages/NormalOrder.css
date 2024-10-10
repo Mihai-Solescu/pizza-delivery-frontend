@@ -207,14 +207,13 @@ body {
   background-color: #0056b3;
 }
 
-/* Modal Popup styling */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -222,38 +221,50 @@ body {
 }
 
 .modal-content {
-  margin-top: 5px;
-  background: white;
-  padding: 20px;
-  padding-bottom: 0px;
+  background-color: #fff;
+  padding: 15px;
+  padding-bottom: 45px;
   border-radius: 10px;
+  width: 80%;
   max-width: 500px;
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-height: 80%;
   position: relative;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-header h1 {
+  font-size: 24px; /* Adjust size if needed */
+  margin: 0;
 }
 
 .close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: red;
-  color: white;
+  background-color: #ff4d4d;
   border: none;
-  padding: 5px 10px;
+  font-size: 20px;
+  color: white;
   cursor: pointer;
-  border-radius: 5px;
+  padding: 5px;
+  border-radius: 50%;
 }
 
 .details-pizza-image {
   width: 100%;
-  height: 200px;
+  max-height: 200px;
   object-fit: cover;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
-.modal-content h1 {
-  margin-top: 0;
+p {
+  font-size: 14px;
+  margin: 5px 0;
 }
 
 .ingredient-list{
@@ -267,6 +278,24 @@ body {
 .ingredient-list ul{
   list-style-type: none;
   padding: 0;
+}
+
+.rating-section {
+  margin-top: 10px;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: gold;
 }
 
 .ingredient-list::-webkit-scrollbar {

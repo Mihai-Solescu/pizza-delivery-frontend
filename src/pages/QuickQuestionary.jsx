@@ -117,7 +117,7 @@ const QuickQuestionary = () => {
               type="number"
               value={preferences.budget_range}
               onChange={(e) => setPreferences({ ...preferences, budget_range: parseFloat(e.target.value) })}
-              step="1"
+              step="0.1"
               min="0"
             />
           </label>
