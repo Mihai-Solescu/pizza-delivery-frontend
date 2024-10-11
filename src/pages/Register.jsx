@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link for navigation
 import './Register.css'; // Custom CSS for styling
 
 function Register() {
@@ -21,8 +21,7 @@ function Register() {
 
     // Send registration data to the server
     try {
-      // First register the user
-      const address_data = [city, address, postalCode]
+      const address_data = [city, address, postalCode];
       await axios.post('http://localhost:8000/customers/register/', {
         first_name: firstName,
         last_name: lastName,
@@ -38,25 +37,23 @@ function Register() {
         password,
       });
 
-      // Get the tokens from the response and store them
-      const { refresh, access } = response.data;  // Destructuring the response data
+      const { refresh, access } = response.data; // Destructuring the response data
       localStorage.setItem('userName', username);
-      localStorage.setItem('accessToken', access);  // Save access token
-      localStorage.setItem('refreshToken', refresh);  // Save refresh token
+      localStorage.setItem('accessToken', access); // Save access token
+      localStorage.setItem('refreshToken', refresh); // Save refresh token
 
-      // Navigate to the preferences page or another desired page
       navigate('/preferences');
     } catch (error) {
       console.error('Error during registration or login:', error);
-      setError('Registration failed. Please try again.'); // Set error message
+      setError('Registration failed. Please try again.');
     }
   };
 
   return (
     <div className="register-container">
       <h1 className="register-heading">Account Creation</h1>
-      {error && <p className="register-error">{error}</p>} {/* Display error if exists */}
-      <form onSubmit={handleSubmit}>
+      {error && <p className="register-error">{error}</p>}
+      <form className="register-form" onSubmit={handleSubmit}> {/* Added class name here */}
         <div className="form-group">
           <input
             type="text"
@@ -131,6 +128,12 @@ function Register() {
         </div>
         <button type="submit" className="btn-register">Submit (to questionnaire)</button>
       </form>
+
+      {/* Back to Login Button */}
+      <div className="back-to-login">
+        <p>Already have an account?</p>
+        <Link to="/login" className="btn-login">Back to Login</Link>
+      </div>
     </div>
   );
 }
