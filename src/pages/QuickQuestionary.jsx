@@ -48,8 +48,35 @@ const QuickQuestionary = () => {
   }, []); // Run only on mount
 
   const handleQuestionnaireSubmit = async (e) => {
-    console.log(preferences)
-  };
+  e.preventDefault(); // Prevent form from submitting normally
+  const token = localStorage.getItem('accessToken'); // Get user's auth token
+
+  try {
+      // Construct query parameters based on preferences
+        const queryParams = new URLSearchParams({
+          smart: 'false',
+          order_type: 'quick',
+          budget_range: preferences.budget_range,
+          is_vegetarian: preferences.is_vegetarian,
+          is_vegan: preferences.is_vegan,
+        }).toString();
+
+        console.log(queryParams)
+
+        const response = await axios.get(`http://localhost:8000/menu/pizzalist/?${queryParams}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log(response.data);
+        alert('pizza-' + response.data[0].name); // Notify user
+        //Redirect or update the UI with the quick order details
+    } catch (error) {
+      console.error('Error during quick order request:', error);
+      alert('An error occurred. Please try again.');
+    }
+};
 
   return (
     <div className="questionnaire-container">

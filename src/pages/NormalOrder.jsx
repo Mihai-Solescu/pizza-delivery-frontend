@@ -176,7 +176,8 @@ function NormalOrder() {
       try {
         // Construct query parameters based on preferences
         const queryParams = new URLSearchParams({
-          filtered: 'false',
+          smart: 'true',
+          order_type: 'normal',
           budget_range: preferences.budget_range,
           is_vegetarian: preferences.is_vegetarian,
           is_vegan: preferences.is_vegan,
