@@ -86,7 +86,7 @@ function PizzaDetailsModal({ pizza, onClose, setSelectedPizza, handleUpdatePizza
       </div>
     </div>
   );
-};
+}
 
 function NormalOrder() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -178,14 +178,12 @@ function NormalOrder() {
     const fetchCartItemCount = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        // Correct the await axios.get to store the response correctly
         const response = await axios.get('http://localhost:8000/orders/itemcount/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-    
-        // Use the response to set cart item count, assuming response.data.item_count contains the count
+
         setCartItemCount(response.data.item_count || 0);  // Set the cart item count
       } catch (error) {
         console.error('Error fetching cart items:', error);
@@ -201,7 +199,6 @@ function NormalOrder() {
     const fetchPizzas = async () => {
       const token = localStorage.getItem('accessToken');
       try {
-        // Construct query parameters based on preferences
         const queryParams = new URLSearchParams({
           smart: 'false',
           order_type: 'normal',
@@ -210,7 +207,6 @@ function NormalOrder() {
           is_vegan: preferences.is_vegan,
         });
 
-        // Add toppings preferences as separate query parameters
         Object.entries(preferences.toppings).forEach(([topping, preference]) => {
           queryParams.append(`${topping}`, preference);
         });
@@ -252,7 +248,6 @@ function NormalOrder() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // After adding to the cart, fetch and update the cart item count
       setCartItemCount(cartItemCount + 1);
     } catch (error) {
       console.error('Failed to add item to cart:', error);
@@ -267,7 +262,7 @@ function NormalOrder() {
   // Function to update pizza in the pizzas list
   const handleUpdatePizza = (updatedPizza) => {
     const updatedPizzas = pizzas.map(pizza =>
-      pizza.pizza_id === updatedPizza.pizza_id ? updatedPizza : pizza
+      pizza.id === updatedPizza.id ? updatedPizza : pizza
     );
     setPizzas(updatedPizzas);
   };
@@ -399,4 +394,3 @@ function NormalOrder() {
 }
 
 export default NormalOrder;
-
