@@ -5,6 +5,8 @@ import NormalOrder from './pages/NormalOrder';
 import Preferences from "./pages/Preferences.jsx";
 import Account from "./pages/Account.jsx";
 import CartPage from './pages/CartPage.jsx';
+import QuickOrder from "./pages/QuickOrder.jsx";
+import QuickQuestionary from "./pages/QuickQuestionary.jsx";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
 
         <Route path="/preferences" element={<Preferences />} /> {/* Questionnaire page */}
         <Route path="/account" element={<Account />} />
+        <Route path="/quickorder" element={<QuickOrder />} />
+        <Route path="/quickquestionary" element={<QuickQuestionary />} />
     </Routes>
   );
 }

@@ -24,6 +24,7 @@ function Login() {
         console.log('Refresh Token:', refresh);
 
         // Store the tokens separately in localStorage
+        localStorage.setItem('userName', username);
         localStorage.setItem('accessToken', access);  // Save access token
         localStorage.setItem('refreshToken', refresh);  // Save refresh token
 

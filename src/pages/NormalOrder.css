@@ -73,26 +73,35 @@ body {
   margin-left: 10px;
 }
 
-.nav-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  width: 100%; /* Centering the buttons */
+.nav-btn-normal1 {
+  padding: 15px;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  flex: 1; /* Make buttons flexible within the container */
+  text-align: center;
+  font-size: 16px;
 }
 
-.nav-btn {
+.nav-btn-quick1 {
   padding: 15px;
   background-color: #f8f8f8;
   color: #333;
   border-radius: 5px;
   text-decoration: none;
   transition: background-color 0.3s ease;
-  width: 200px; /* Make the buttons wider */
+  flex: 1; /* Make buttons flexible within the container */
   text-align: center;
   font-size: 16px;
 }
 
-.nav-btn:hover {
+.nav-btn-normal1:hover {
+  background-color: #e0e0e0;
+}
+
+.nav-btn-quick1:hover {
   background-color: #e0e0e0;
 }
 
@@ -100,6 +109,7 @@ body {
 .wrapper {
   width: 100%; /* Full width to hold pizza items */
   max-width: 900px; /* Limit the width of the content */
+  margin-top: 5%;
 }
 
 /* Pizza List styling */
@@ -148,9 +158,8 @@ body {
   font-size: 16px;
 }
 
-/* Button styling for More Info and Add to Cart buttons */
-.more-info-btn,
-.add-to-cart-btn {
+.pizza-card-buttons button{
+  width: 100%;
   background-color: #007bff;
   color: white;
   border: none;
@@ -158,8 +167,39 @@ body {
   cursor: pointer;
   border-radius: 5px;
   margin-left: 10px;
+  margin-top: 5px;
   transition: background-color 0.3s ease;
   font-size: 14px;
+}
+
+.pizza-item-heading{
+  display: flex;         /* Enable Flexbox layout */
+  justify-content: space-between; /* Space between items, can also use 'center', 'flex-start', etc. */
+  align-items: center;   /* Align items vertically in the center */
+  width: 100%;           /* Full width of the parent */
+  height: fit-content;        /* Set a height for the container */
+}
+
+.pizza-label{
+  width: 100px;
+}
+
+.pizza-tags{
+  right: 0;
+  text-align: right;
+  height: 50px;
+  width: 400px;
+}
+
+.pizza-tags img{
+  padding-right: 10px;
+  padding-left: 10px;
+  width: 60px;
+  height: 45px;
+}
+
+.pizza-tags img:hover{
+  opacity: 80%;
 }
 
 .more-info-btn:hover,
@@ -167,14 +207,13 @@ body {
   background-color: #0056b3;
 }
 
-/* Modal Popup styling */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,39 +221,97 @@ body {
 }
 
 .modal-content {
-  background: white;
-  padding: 20px;
+  background-color: #fff;
+  padding: 15px;
+  padding-bottom: 45px;
   border-radius: 10px;
+  width: 80%;
   max-width: 500px;
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-height: 80%;
   position: relative;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-header h1 {
+  font-size: 24px; /* Adjust size if needed */
+  margin: 0;
 }
 
 .close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: red;
-  color: white;
+  background-color: #ff4d4d;
   border: none;
-  padding: 5px 10px;
+  font-size: 20px;
+  color: white;
   cursor: pointer;
-  border-radius: 5px;
+  padding: 5px;
+  border-radius: 50%;
 }
 
 .details-pizza-image {
   width: 100%;
-  height: 200px;
+  max-height: 200px;
   object-fit: cover;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
-.modal-content h1 {
-  margin-top: 0;
+p {
+  font-size: 14px;
+  margin: 5px 0;
 }
 
-ul {
+.ingredient-list{
+  max-height: 120px; /* Set the desired maximum height */
+  overflow-y: auto;  /* Enable vertical scrolling */
+  border: 1px solid #ccc; /* Optional: add a border for better visibility */
+  padding: 10px; /* Optional: add some padding */
+  margin-bottom: 5px;
+}
+
+.ingredient-list ul{
   list-style-type: none;
   padding: 0;
+}
+
+.rating-section {
+  margin-top: 10px;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: gold;
+}
+
+.ingredient-list::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+}
+
+.ingredient-list::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.ingredient-list::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar handle */
+    border-radius: 10px; /* Rounded corners for the handle */
+}
+
+.ingredient-list::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the handle on hover */
 }
