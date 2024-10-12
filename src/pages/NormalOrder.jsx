@@ -20,7 +20,7 @@ function PizzaDetailsModal({ pizza, onClose }) {
     try {
         // Send a POST request to update the pizza rating in the backend
         const response = await axios.post(
-            `http://localhost:8000/menu/pizza/${pizza.pizza_id}/rating`,  // Assuming this is the correct URL for your rating API
+            `http://localhost:8000/menu/pizza/${pizza.id}/rating`,  // Assuming this is the correct URL for your rating API
             { rating },  // Send the new rating as part of the request body
             {
                 headers: {
@@ -86,6 +86,7 @@ function NormalOrder() {
   const [error, setError] = useState(null);
   const [selectedPizza, setSelectedPizza] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
   const [preferences, setPreferences] = useState({
     favourite_sauce: 0, // default to Tomato
     cheese_preference: 0, // default to Mozzarella
@@ -166,6 +167,24 @@ function NormalOrder() {
       }
     };
 
+    const fetchCartItemCount = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        // Correct the await axios.get to store the response correctly
+        const response = await axios.get('http://localhost:8000/orders/itemcount/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    
+        // Use the response to set cart item count, assuming response.data.item_count contains the count
+        setCartItemCount(response.data.item_count || 0);  // Set the cart item count
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    };
+
+    fetchCartItemCount();
     fetchPreferences();
   }, []);
 
@@ -209,6 +228,26 @@ function NormalOrder() {
     setShowModal(true);
   };
 
+  const handleAddToCartClick = async (pizzaId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      await axios.post(
+        'http://localhost:8000/orders/add-item/',
+        {
+          item_type: 'pizza',
+          item_id: pizzaId,
+          quantity: 1,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // After adding to the cart, fetch and update the cart item count
+      setCartItemCount(cartItemCount + 1);
+    } catch (error) {
+      console.error('Failed to add item to cart:', error);
+    }
+  };
+
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedPizza(null);
@@ -217,7 +256,7 @@ function NormalOrder() {
   const handleTagClick = (pizzaId, tagName) => {
     // Find the pizza in the current state
   const updatedPizzas = pizzas.map(pizza => {
-    if (pizza.pizza_id === pizzaId) {
+    if (pizza.id === pizzaId) {
       // Toggle the specific tag
       const updatedTags = { ...pizza.tags, [tagName]: !pizza.tags[tagName] };
 
@@ -272,7 +311,9 @@ function NormalOrder() {
             )}
           </div>
           <div className="shopping-cart">
-            <Link to="/cart">🛒</Link>
+            <Link to="/cart">
+              🛒 <span className="cart-item-count">{cartItemCount}</span>  {/* Show the cart item count */}
+            </Link>
           </div>
           <div className="username">{localStorage.getItem("userName")}</div>
         </div>
@@ -298,19 +339,19 @@ function NormalOrder() {
                       src={order_tag}
                       alt="order tag"
                       style={{ opacity: pizza.tags.order_tag ? 1 : 0.3 }}
-                      onClick={() => handleTagClick(pizza.pizza_id, 'order_tag')}
+                      onClick={() => handleTagClick(pizza.id, 'order_tag')}
                     />
                     <img
                       src={rate_tag}
                       alt="rate tag"
                       style={{ opacity: pizza.tags.rate_tag ? 1 : 0.3 }}
-                      onClick={() => handleTagClick(pizza.pizza_id, 'rate_tag')}
+                      onClick={() => handleTagClick(pizza.id, 'rate_tag')}
                     />
                     <img
                       src={try_tag}
                       alt="try tag"
                       style={{ opacity: pizza.tags.try_tag ? 1 : 0.3 }}
-                      onClick={() => handleTagClick(pizza.pizza_id, 'try_tag')}
+                      onClick={() => handleTagClick(pizza.id, 'try_tag')}
                     />
                     <img
                       src={vegan_tag}
@@ -328,7 +369,7 @@ function NormalOrder() {
                   <button className="more-info-btn" onClick={() => handlePizzaClick(pizza)}>
                     More Info
                   </button>
-                  <button className="add-to-cart-btn">
+                  <button className="add-to-cart-btn" onClick={() => handleAddToCartClick(pizza.id)}>
                     Add to Cart
                   </button>
                 </div>
