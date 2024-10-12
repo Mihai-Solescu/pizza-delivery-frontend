@@ -25,6 +25,7 @@ function CartPage() {
   const [cartItems, setCartItems] = useState({pizza: [], drink: [], dessert: [] }); // Initialize cartItems as an object with arrays
   const [totalPrice, setTotalPrice] = useState(0); 
   const [totalCartItems, setTotalCartItems] = useState(0); // Initialize totalCartItems state
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const fetchTotalPrice = async () => {
     const token = localStorage.getItem('accessToken');
@@ -147,30 +148,45 @@ function CartPage() {
     }
   };
 
-  return (
-    <div className="cart-page">
-      {/* Top bar with username and navigation */}
-      <div className="top-bar">
-        <div className="top-left">
-          <div className="hamburger-menu">
-            <div className="menu-icon">☰</div>
-          </div>
-          <div className="shopping-cart">
-            🛒 <span className="cart-item-count">{totalCartItems}</span> {/* Display number of items in cart */}
-          </div>
-        </div>
-        <div className="username">{localStorage.getItem("userName")}</div>
-        <div className="nav-buttons">
-          <Link to="/normalorder" className="nav-btn">Normal</Link>
-          <Link to="/quickorder" className="nav-btn">Quick</Link>
-        </div>
-      </div>
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
-      {/* Cart Items */}
-      <div className="cart-section">
-        <h2>Items in Your Cart</h2>
-        
-        {/* <CartItemCard 
+  return (
+      <div className="cart-page">
+        {/* Top bar with username and navigation */}
+        <div className="top-bar">
+          <div className="top-left">
+            <div className="hamburger-menu">
+              <div className="menu-icon" onClick={toggleMenu}>
+                ☰
+              </div>
+              {menuOpen && (
+                  <div className="menu-content">
+                    <Link to="/account">Account</Link>
+                    <Link to="/settings">Settings</Link>
+                    <Link to="/preferences">Preferences</Link>
+                  </div>
+              )}
+            </div>
+            <div className="shopping-cart">
+              <Link to="/cart">
+                🛒 <span className="cart-item-count"></span> {/* Show the cart item count */}
+              </Link>
+            </div>
+            <div className="username">{localStorage.getItem("userName")}</div>
+          </div>
+          <div className="nav-buttons">
+            <Link to="/normalorder" className="nav-btn-normal1">Normal</Link>
+            <Link to="/quickorder" className="nav-btn-quick1">Quick</Link>
+          </div>
+        </div>
+
+        {/* Cart Items */}
+        <div className="cart-section">
+          <h2>Items in Your Cart</h2>
+
+          {/* <CartItemCard
         item={{ pizza: { name: 'Dummy Pizza', price: 0 }, quantity: 1 }}
         type="pizza"
         increaseQuantity={increaseQuantity}
@@ -178,49 +194,49 @@ function CartPage() {
         index={-1}
         /> */}
 
-        {/* Render pizzas */}
-        {cartItems.pizza.map((item, index) => (
-          <CartItemCard
-            key={index}
-            item={item}
-            type="pizza"
-            index={index}
-            increaseQuantity={increaseQuantity}
-            decreaseQuantity={decreaseQuantity}
-          />
-        ))}
+          {/* Render pizzas */}
+          {cartItems.pizza.map((item, index) => (
+              <CartItemCard
+                  key={index}
+                  item={item}
+                  type="pizza"
+                  index={index}
+                  increaseQuantity={increaseQuantity}
+                  decreaseQuantity={decreaseQuantity}
+              />
+          ))}
 
-        {/* Render drinks */}
-        {cartItems.drink.map((item, index) => (
-          <CartItemCard
-            key={index}
-            item={item}
-            type="drink"
-            index={index}
-            increaseQuantity={increaseQuantity}
-            decreaseQuantity={decreaseQuantity}
-          />
-        ))}
+          {/* Render drinks */}
+          {cartItems.drink.map((item, index) => (
+              <CartItemCard
+                  key={index}
+                  item={item}
+                  type="drink"
+                  index={index}
+                  increaseQuantity={increaseQuantity}
+                  decreaseQuantity={decreaseQuantity}
+              />
+          ))}
 
-        {/* Render desserts */}
-        {cartItems.dessert.map((item, index) => (
-          <CartItemCard
-            key={index}
-            item={item}
-            type="dessert"
-            index={index}
-            increaseQuantity={increaseQuantity}
-            decreaseQuantity={decreaseQuantity}
-          />
-        ))}
+          {/* Render desserts */}
+          {cartItems.dessert.map((item, index) => (
+              <CartItemCard
+                  key={index}
+                  item={item}
+                  type="dessert"
+                  index={index}
+                  increaseQuantity={increaseQuantity}
+                  decreaseQuantity={decreaseQuantity}
+              />
+          ))}
+        </div>
+
+        {/* Total and Confirm Order */}
+        <div className="total-section">
+          <h2>Total: {totalPrice.toFixed(2)} €</h2>
+          <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
+        </div>
       </div>
-
-      {/* Total and Confirm Order */}
-      <div className="total-section">
-        <h2>Total: {totalPrice.toFixed(2)} €</h2>
-        <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
-      </div>
-    </div>
   );
 }
 

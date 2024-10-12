@@ -81,67 +81,93 @@ function QuickOrder() {
     setIsLoading(true); // Optional: Set loading state
     const token = localStorage.getItem('accessToken'); // Get user's auth token if needed
 
-      try {
+    let pizzaId = null; // Variable to store the pizza ID
+
+    try {
         const response = await axios.get('http://localhost:8000/customers/preferences/', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         });
 
         // Transform the response data to fit the preferences model
         if (response.data) {
-          const responseData = response.data;
+            const responseData = response.data;
 
-          const updatedPreferences = {
-            favourite_sauce: responseData.favourite_sauce || 0,
-            cheese_preference: responseData.cheese_preference || 0,
-            toppings: {}, // Initialize empty toppings
-            spiciness_level: responseData.spiciness_level || 0,
-            is_vegetarian: responseData.is_vegetarian || false,
-            is_vegan: responseData.is_vegan || false,
-            pizza_size: responseData.pizza_size || 1,
-            budget_range: responseData.budget_range || 7,
-          };
+            const updatedPreferences = {
+                favourite_sauce: responseData.favourite_sauce || 0,
+                cheese_preference: responseData.cheese_preference || 0,
+                toppings: {}, // Initialize empty toppings
+                spiciness_level: responseData.spiciness_level || 0,
+                is_vegetarian: responseData.is_vegetarian || false,
+                is_vegan: responseData.is_vegan || false,
+                pizza_size: responseData.pizza_size || 1,
+                budget_range: responseData.budget_range || 7,
+            };
 
-          responseData.toppings.forEach(topping => {
-            updatedPreferences.toppings[topping.name] = topping.preference;
-          });
+            responseData.toppings.forEach(topping => {
+                updatedPreferences.toppings[topping.name] = topping.preference;
+            });
 
-          setPreferences(updatedPreferences);
+            setPreferences(updatedPreferences);
         }
-      } catch (error) {
-          console.error('Error fetching preferences:', error);
-      }
+    } catch (error) {
+        console.error('Error fetching preferences:', error);
+    }
 
     try {
-      // Construct query parameters based on preferences
+        // Construct query parameters based on preferences
         const queryParams = new URLSearchParams({
-          smart: 'false',
-          order_type: 'quick',
-          budget_range: preferences.budget_range,
-          is_vegetarian: preferences.is_vegetarian,
-          is_vegan: preferences.is_vegan,
+            smart: 'false',
+            order_type: 'quick',
+            budget_range: preferences.budget_range,
+            is_vegetarian: preferences.is_vegetarian,
+            is_vegan: preferences.is_vegan,
         }).toString();
 
-        console.log(queryParams)
+        console.log(queryParams);
 
         const response = await axios.get(`http://localhost:8000/menu/pizzalist/?${queryParams}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         });
 
         console.log(response.data);
-        alert('pizza-' + response.data[0].name); // Notify user
-        //Redirect or update the UI with the quick order details
+        if (response.data.length > 0) {
+            const selectedPizza = response.data[0]; // Store the first pizza in a variable
+            pizzaId = selectedPizza.id; // Store the pizza's ID
+            alert('pizza-' + selectedPizza.name); // Notify user
+        }
+
+        // Redirect or update the UI with the quick order details
         setShowPopup(false); // Close the modal
     } catch (error) {
-      console.error('Error during quick order request:', error);
-      alert('An error occurred. Please try again.');
+        console.error('Error during quick order request:', error);
+        alert('An error occurred. Please try again.');
     } finally {
-      setIsLoading(false); // Optional: Clear loading state
+        setIsLoading(false); // Optional: Clear loading state
     }
-  };
+
+    if (pizzaId) {
+        try {
+            await axios.post(
+                'http://localhost:8000/orders/add-item/',
+                {
+                    item_type: 'pizza',
+                    item_id: pizzaId, // Use the stored pizza ID here
+                    quantity: 1,
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            window.location.href = '/cart';
+        } catch (error) {
+            console.error('Failed to add item to cart:', error);
+        }
+    } else {
+        console.error('No pizza selected to add to the cart.');
+    }
+};
 
   return (
     <div className="quick-page">
