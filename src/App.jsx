@@ -15,9 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/normalorder" element={<NormalOrder />} />
-        <Route path="/quickorder" element={<NormalOrder />} />
         <Route path="/cart" element={<CartPage />} />
-
         <Route path="/preferences" element={<Preferences />} /> {/* Questionnaire page */}
         <Route path="/account" element={<Account />} />
         <Route path="/quickorder" element={<QuickOrder />} />
