@@ -7,6 +7,7 @@ import Account from "./pages/Account.jsx";
 import CartPage from './pages/CartPage.jsx';
 import QuickOrder from "./pages/QuickOrder.jsx";
 import QuickQuestionary from "./pages/QuickQuestionary.jsx";
+import DeliveryStatusPage from './pages/DeliveryStatus.jsx'; 
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/quickorder" element={<QuickOrder />} />
         <Route path="/quickquestionary" element={<QuickQuestionary />} />
+        <Route path="/deliverystatus" element={<DeliveryStatusPage />} />
     </Routes>
   );
 }

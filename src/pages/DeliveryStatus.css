@@ -1,0 +1,47 @@
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .form {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #ccc;
+    background-color: #28a745;
+    color: #0c0b0b;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .error {
+    color: #28a745;
+    margin-bottom: 20px;
+  }
+  
+  .statusContainer {
+    padding: 20px;
+    border: 1px solid #7e3232;
+    border-radius: 8px;
+    background-color: #0c0b0b;
+    color: #7e3232;
+  }
