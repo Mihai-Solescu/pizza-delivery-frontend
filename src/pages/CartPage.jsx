@@ -4,6 +4,7 @@ import './CartPage.css';  // Assuming you'll create this CSS file for styling
 import { Link } from 'react-router-dom';
 
 function CartItemCard({ item, type, increaseQuantity, decreaseQuantity, index }) {
+  const itemId = item[type]?.id;
   return (
     <div className="cart-item">
       <img src="https://via.placeholder.com/100" alt={item[type].name} className="item-image" />
@@ -11,9 +12,9 @@ function CartItemCard({ item, type, increaseQuantity, decreaseQuantity, index })
         <h3>{item[type].name}</h3>
         <p>{(item[type].price * item.quantity).toFixed(2)} €</p>
         <div className="quantity-control">
-          <button onClick={() => decreaseQuantity(index, type)}>-</button>
+          <button onClick={() => increaseQuantity(index, type, itemId)}>+</button>
           <span>{item.quantity}</span>
-          <button onClick={() => increaseQuantity(index, type)}>+</button>
+          <button onClick={() => decreaseQuantity(index, type, itemId)}>-</button>
         </div>
       </div>
     </div>
@@ -21,9 +22,23 @@ function CartItemCard({ item, type, increaseQuantity, decreaseQuantity, index })
 }
 
 function CartPage() {
-  const [cartItems, setCartItems] = useState({ pizzas: [], drinks: [], desserts: [] }); // Initialize cartItems as an object with arrays
+  const [cartItems, setCartItems] = useState({pizza: [], drink: [], dessert: [] }); // Initialize cartItems as an object with arrays
   const [totalPrice, setTotalPrice] = useState(0); 
   const [totalCartItems, setTotalCartItems] = useState(0); // Initialize totalCartItems state
+
+  const fetchTotalPrice = async () => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.get('http://localhost:8000/orders/totalprice/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      setTotalPrice(response.data.total_price || 0);  // Set the total price
+    } catch (error) {
+      console.error('Error fetching total price:', error);
+    }
+  };
 
   // Fetch cart items and calculate
   useEffect(() => {
@@ -35,8 +50,8 @@ function CartPage() {
             Authorization: `Bearer ${token}`,
           }
         });
-        console.log('Fetched cart items', response.data);
         setCartItems(response.data);
+        console.log('Fetched cart items', cartItems);
       } catch (error) {
         console.log('Failed to fetch cart items', error);
       }
@@ -56,42 +71,25 @@ function CartPage() {
       }
     };
 
-    const fetchTotalPrice = async () => {
-      const token = localStorage.getItem('accessToken');
-      try {
-        const response = await axios.get('http://localhost:8000/orders/totalprice/', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        });
-        setTotalPrice(response.data.total_price || 0);  // Set the total price
-      } catch (error) {
-        console.error('Error fetching total price:', error);
-      }
-    };
-
     fetchTotalPrice();
     fetchCartItemCount();
     fetchCartItems();
   }, []);
 
-  // Calculate total price and total cart items based on cart items
-  const calculateTotal = (items) => {
-    const total = [...items.pizzas, ...items.drinks, ...items.desserts].reduce(
-      (acc, item) => acc + item[item.content_type].price * item.quantity,
-      0
-    );
-    setTotalPrice(total);
-  };
-
   // Increase quantity of an item and call server
   const increaseQuantity = async (index, type, itemId) => {
-    const updatedCart = { ...cartItems };
-    updatedCart[type][index].quantity += 1;
-    setCartItems(updatedCart);
-    calculateTotal(updatedCart);
-
-    // Call server to update the quantity
+    // Ensure cartItems[type] exists and is an array
+    if (!Array.isArray(cartItems[type])) {
+      console.error(`cartItems[${type}] is not an array or does not exist`);
+      return;
+    }
+    // Ensure item exists at the given index
+    const currentItem = cartItems[type][index];
+    if (!currentItem) {
+      console.error(`No item found at index ${index} for type ${type}`);
+      return;
+    }
+    
     const token = localStorage.getItem('accessToken');
     try {
       await axios.post('http://localhost:8000/orders/add-item/', {
@@ -103,21 +101,17 @@ function CartPage() {
           Authorization: `Bearer ${token}`
         }
       });
+      cartItems[type][index].quantity += 1;
+      setTotalCartItems(totalCartItems + 1);
+      fetchTotalPrice();
     } catch (error) {
       console.error('Error updating quantity on the server:', error);
     }
-    setTotalCartItems(totalCartItems + 1); // Increase total cart items
   };
 
   // Decrease quantity of an item and call server
   const decreaseQuantity = async (index, type, itemId) => {
-    const updatedCart = { ...cartItems };
-    if (updatedCart[type][index].quantity > 1) {
-      updatedCart[type][index].quantity -= 1;
-      setCartItems(updatedCart);
-      calculateTotal(updatedCart);
-
-      // Call server to update the quantity
+    if (cartItems[type][index].quantity > 0) {
       const token = localStorage.getItem('accessToken');
       try {
         await axios.post('http://localhost:8000/orders/remove-item/', {
@@ -129,10 +123,12 @@ function CartPage() {
             Authorization: `Bearer ${token}`
           }
         });
+        cartItems[type][index].quantity -= 1;
+        setTotalCartItems(totalCartItems - 1);
+        fetchTotalPrice();
       } catch (error) {
         console.error('Error updating quantity on the server:', error);
       }
-      setTotalCartItems(totalCartItems - 1); // Decrease total cart items
     }
   };
 
@@ -163,7 +159,7 @@ function CartPage() {
             🛒 <span className="cart-item-count">{totalCartItems}</span> {/* Display number of items in cart */}
           </div>
         </div>
-        <div className="username">Username</div>
+        <div className="username">{localStorage.getItem("userName")}</div>
         <div className="nav-buttons">
           <Link to="/normalorder" className="nav-btn">Normal</Link>
           <Link to="/quickorder" className="nav-btn">Quick</Link>
@@ -183,7 +179,7 @@ function CartPage() {
         /> */}
 
         {/* Render pizzas */}
-        {cartItems.pizzas.map((item, index) => (
+        {cartItems.pizza.map((item, index) => (
           <CartItemCard
             key={index}
             item={item}
@@ -195,7 +191,7 @@ function CartPage() {
         ))}
 
         {/* Render drinks */}
-        {cartItems.drinks.map((item, index) => (
+        {cartItems.drink.map((item, index) => (
           <CartItemCard
             key={index}
             item={item}
@@ -207,7 +203,7 @@ function CartPage() {
         ))}
 
         {/* Render desserts */}
-        {cartItems.desserts.map((item, index) => (
+        {cartItems.dessert.map((item, index) => (
           <CartItemCard
             key={index}
             item={item}
