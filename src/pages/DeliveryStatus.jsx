@@ -1,37 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './DeliveryStatus.css'; // Import the CSS file
+import './DeliveryStatus.css';
 
 const DeliveryStatusPage = () => {
-  const [orderId, setOrderId] = useState('');
   const [orderStatus, setOrderStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleInputChange = (e) => {
-    setOrderId(e.target.value);
-  };
+  // Fetch the latest order status on component mount
+  useEffect(() => {
+    fetchLatestOrderStatus();
+  }, []);
 
-  const fetchOrderStatus = async () => {
-    if (!orderId) {
-      setError('Please enter an Order ID.');
-      setOrderStatus(null);
-      return;
-    }
-
-    if (!/^\d+$/.test(orderId)) {
-      setError('Order ID must be a number.');
-      setOrderStatus(null);
-      return;
-    }
-
+  const fetchLatestOrderStatus = async () => {
     setLoading(true);
     setError(null);
     setOrderStatus(null);
 
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:8000/orders/${orderId}/status/`, {
+      const response = await axios.get('http://localhost:8000/orders/latest/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +29,7 @@ const DeliveryStatusPage = () => {
     } catch (err) {
       if (err.response) {
         if (err.response.status === 404) {
-          setError('Order does not exist.');
+          setError('No recent orders found.');
         } else if (err.response.status === 401) {
           setError('Unauthorized. Please log in again.');
         } else {
@@ -57,27 +45,38 @@ const DeliveryStatusPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetchOrderStatus();
+  const handleCancelOrder = async () => {
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(`http://localhost:8000/orders/${orderStatus.id}/cancel/`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.status === 'Order canceled') {
+        setOrderStatus({ ...orderStatus, status: 'canceled' });
+      } else {
+        setError('Failed to cancel the order.');
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        setError('Cannot modify order.');
+      } else if (err.response && err.response.status === 404) {
+        setError('Order does not exist.');
+      } else {
+        setError('An error occurred while canceling the order.');
+      }
+    }
   };
 
   return (
     <div className="container">
-      <h1>Check Your Order Status</h1>
-      <form onSubmit={handleSubmit} className="form">
-        <input
-          type="text"
-          placeholder="Enter Order ID"
-          value={orderId}
-          onChange={handleInputChange}
-          className="input"
-        />
-        <button type="submit" className="button" disabled={loading}>
-          {loading ? 'Loading...' : 'Check Status'}
-        </button>
-      </form>
+      <h1>Check Your Latest Order Status</h1>
 
+      {loading && <p>Loading...</p>}
       {error && <div className="error">{error}</div>}
 
       {orderStatus && (
@@ -90,13 +89,19 @@ const DeliveryStatusPage = () => {
           {orderStatus.delivery && (
             <>
               <h3>Delivery Information</h3>
-              <p><strong>Order ID:</strong> {orderStatus.id}</p>
               <p><strong>Delivery Status:</strong> {orderStatus.delivery.delivery_status}</p>
               <p><strong>Pizza Quantity:</strong> {orderStatus.delivery.pizza_quantity}</p>
               <p><strong>Delivery Address:</strong> {orderStatus.delivery.delivery_address}</p>
               <p><strong>Postal Code:</strong> {orderStatus.delivery.postal_code}</p>
               <p><strong>Delivery Person:</strong> {orderStatus.delivery.delivery_person ? orderStatus.delivery.delivery_person.name : 'Not Assigned'}</p>
             </>
+          )}
+
+          {/* Cancel Order Button */}
+          {orderStatus.status !== 'canceled' && (
+            <button onClick={handleCancelOrder} className="cancelButton">
+              Cancel Order
+            </button>
           )}
         </div>
       )}
