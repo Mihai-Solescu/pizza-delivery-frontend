@@ -297,19 +297,19 @@ function NormalOrder() {
                     <img
                       src={order_tag}
                       alt="order tag"
-                      style={{ opacity: pizza.tags.order_tag ? 1 : 0.1 }}
+                      style={{ opacity: pizza.tags.order_tag ? 1 : 0.3 }}
                       onClick={() => handleTagClick(pizza.pizza_id, 'order_tag')}
                     />
                     <img
                       src={rate_tag}
                       alt="rate tag"
-                      style={{ opacity: pizza.tags.rate_tag ? 1 : 0.1 }}
+                      style={{ opacity: pizza.tags.rate_tag ? 1 : 0.3 }}
                       onClick={() => handleTagClick(pizza.pizza_id, 'rate_tag')}
                     />
                     <img
                       src={try_tag}
                       alt="try tag"
-                      style={{ opacity: pizza.tags.try_tag ? 1 : 0.1 }}
+                      style={{ opacity: pizza.tags.try_tag ? 1 : 0.3 }}
                       onClick={() => handleTagClick(pizza.pizza_id, 'try_tag')}
                     />
                     <img

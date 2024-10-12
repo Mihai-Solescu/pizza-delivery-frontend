@@ -8,6 +8,7 @@ function CartPage() {
   const [drinks, setDrinks] = useState([]);        // Drinks list from server
   const [desserts, setDesserts] = useState([]);    // Desserts list from server
   const [totalPrice, setTotalPrice] = useState(0); // Total cart price
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Fetch cart items and calculate total price
   useEffect(() => {
@@ -61,6 +62,10 @@ function CartPage() {
     setTotalPrice(total);
   };
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   // Increase quantity of an item
   const increaseQuantity = (index) => {
     const updatedCart = [...cartItems];
@@ -95,77 +100,88 @@ function CartPage() {
   };
 
   return (
-    <div className="cart-page">
-      {/* Top bar with username and navigation */}
-      <div className="top-bar">
-        <div className="top-left">
-          <div className="hamburger-menu">
-            <div className="menu-icon">☰</div>
-          </div>
-          <div className="shopping-cart">🛒</div>
-        </div>
-        <div className="username">Username</div>
-        <div className="nav-buttons">
-          <Link to="/normalorder" className="nav-btn">Normal</Link>
-          <Link to="/quickorder" className="nav-btn">Quick</Link>
-        </div>
-      </div>
-
-      {/* Cart Items */}
-      <div className="cart-section">
-        <h2>Items in Your Cart</h2>
-        {cartItems.map((item, index) => (
-          <div key={index} className="cart-item">
-            <img src="https://via.placeholder.com/100" alt={item.name} className="item-image" />
-            <div className="item-info">
-              <h3>{item.name}</h3>
-              <p>{(item.price * item.quantity).toFixed(2)} €</p>
-              <div className="quantity-control">
-                <button onClick={() => decreaseQuantity(index)}>-</button>
-                <span>{item.quantity}</span>
-                <button onClick={() => increaseQuantity(index)}>+</button>
+      <div className="cart-page">
+        {/* Top bar with username and navigation */}
+        <div className="top-bar">
+          <div className="top-left">
+            <div className="hamburger-menu">
+              <div className="menu-icon" onClick={toggleMenu}>
+                ☰
               </div>
+              {menuOpen && (
+                  <div className="menu-content">
+                    <Link to="/account">Account</Link>
+                    <Link to="/settings">Settings</Link>
+                    <Link to="/preferences">Preferences</Link>
+                  </div>
+              )}
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Drinks Section */}
-      <div className="drinks-section">
-        <h2>Would you like drinks?</h2>
-        {drinks.map((drink, index) => (
-          <div key={index} className="cart-item">
-            <img src="https://via.placeholder.com/100" alt={drink.name} className="item-image" />
-            <div className="item-info">
-              <h3>{drink.name}</h3>
-              <p>{drink.price} €</p>
-              <button>Add to Cart</button>
+            <div className="shopping-cart">
+              <Link to="/cart">🛒</Link>
             </div>
+            <div className="username">{localStorage.getItem("userName")}</div>
           </div>
-        ))}
-      </div>
-
-      {/* Desserts Section */}
-      <div className="desserts-section">
-        <h2>Would you like desserts?</h2>
-        {desserts.map((dessert, index) => (
-          <div key={index} className="cart-item">
-            <img src="https://via.placeholder.com/100" alt={dessert.name} className="item-image" />
-            <div className="item-info">
-              <h3>{dessert.name}</h3>
-              <p>{dessert.price} €</p>
-              <button>Add to Cart</button>
-            </div>
+          <div className="nav-buttons">
+            <Link to="/normalorder" className="nav-btn">Normal</Link>
+            <Link to="/quickorder" className="nav-btn">Quick</Link>
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Total and Confirm Order */}
-      <div className="total-section">
-        <h2>Total: {totalPrice.toFixed(2)} €</h2>
-        <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
+        {/* Cart Items */}
+        <div className="cart-section">
+          <h2>Items in Your Cart</h2>
+          {cartItems.map((item, index) => (
+              <div key={index} className="cart-item">
+                <img src="https://via.placeholder.com/100" alt={item.name} className="item-image"/>
+                <div className="item-info">
+                  <h3>{item.name}</h3>
+                  <p>{(item.price * item.quantity).toFixed(2)} €</p>
+                  <div className="quantity-control">
+                    <button onClick={() => decreaseQuantity(index)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => increaseQuantity(index)}>+</button>
+                  </div>
+                </div>
+              </div>
+          ))}
+        </div>
+
+        {/* Drinks Section */}
+        <div className="drinks-section">
+          <h2>Would you like drinks?</h2>
+          {drinks.map((drink, index) => (
+              <div key={index} className="cart-item">
+                <img src="https://via.placeholder.com/100" alt={drink.name} className="item-image"/>
+                <div className="item-info">
+                  <h3>{drink.name}</h3>
+                  <p>{drink.price} €</p>
+                  <button>Add to Cart</button>
+                </div>
+              </div>
+          ))}
+        </div>
+
+        {/* Desserts Section */}
+        <div className="desserts-section">
+          <h2>Would you like desserts?</h2>
+          {desserts.map((dessert, index) => (
+              <div key={index} className="cart-item">
+                <img src="https://via.placeholder.com/100" alt={dessert.name} className="item-image"/>
+                <div className="item-info">
+                  <h3>{dessert.name}</h3>
+                  <p>{dessert.price} €</p>
+                  <button>Add to Cart</button>
+                </div>
+              </div>
+          ))}
+        </div>
+
+        {/* Total and Confirm Order */}
+        <div className="total-section">
+          <h2>Total: {totalPrice.toFixed(2)} €</h2>
+          <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
+        </div>
       </div>
-    </div>
   );
 }
 

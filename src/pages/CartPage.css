@@ -42,22 +42,22 @@ body {
     display: flex;
     gap: 10px;
   }
-  
-  .nav-btn {
-    padding: 15px;
-    background-color: #f8f8f8;
-    color: #333;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    flex: 1; /* Make buttons flexible within the container */
-    text-align: center;
-    font-size: 16px;
-  }
-  
-  .nav-btn:hover {
-    background-color: #e0e0e0;
-  }
+
+.nav-btn{
+  padding: 15px;
+  background-color: #f8f8f8;
+  color: #333;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  flex: 1; /* Make buttons flexible within the container */
+  text-align: center;
+  font-size: 16px;
+}
+
+.nav-btn:hover {
+  background-color: #e0e0e0;
+}
   
   /* Cart section styling */
   .cart-section,
