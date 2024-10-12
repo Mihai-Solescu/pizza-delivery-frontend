@@ -22,10 +22,11 @@ function CartItemCard({ item, type, increaseQuantity, decreaseQuantity, index })
 }
 
 function CartPage() {
-  const [cartItems, setCartItems] = useState({pizza: [], drink: [], dessert: [] }); // Initialize cartItems as an object with arrays
+  const [cartItems, setCartItems] = useState({pizza: [], drink: [], dessert: [] }); // Initialize cartItems as an object with arrays for each type
   const [totalPrice, setTotalPrice] = useState(0); 
-  const [totalCartItems, setTotalCartItems] = useState(0); // Initialize totalCartItems state
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [totalCartItems, setTotalCartItems] = useState(0);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountMessage, setDiscountMessage] = useState('');
 
   const fetchTotalPrice = async () => {
     const token = localStorage.getItem('accessToken');
@@ -90,7 +91,7 @@ function CartPage() {
       console.error(`No item found at index ${index} for type ${type}`);
       return;
     }
-    
+
     const token = localStorage.getItem('accessToken');
     try {
       await axios.post('http://localhost:8000/orders/add-item/', {
@@ -133,60 +134,77 @@ function CartPage() {
     }
   };
 
+  // Handle discount code redemption
+  const handleRedeemDiscount = async () => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/orders/redeem-discount/', // Replace with your actual endpoint
+        { discount_code: discountCode }, // Send the discount code in the request body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Assuming the response includes the updated total price after applying the discount
+      setTotalPrice(response.data.total_price); 
+      setDiscountMessage('Discount applied successfully!');
+    } catch (error) {
+      setDiscountMessage('Failed to apply discount.');
+      console.error('Error redeeming discount:', error);
+    }
+  };
+
+  // Handle input changes for the discount code
+  const handleDiscountCodeChange = (event) => {
+    setDiscountCode(event.target.value);
+  };
+
   // Confirm Order
   const handleConfirmOrder = async () => {
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post('http://localhost:8000/orders/finalize/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    await axios.post(
+      'http://localhost:8000/orders/finalize/',
+      {}, // No data to send, so pass an empty object
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       alert('Order Confirmed!');
     } catch (error) {
       console.log('Failed to confirm order', error);
     }
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   return (
-      <div className="cart-page">
-        {/* Top bar with username and navigation */}
-        <div className="top-bar">
-          <div className="top-left">
-            <div className="hamburger-menu">
-              <div className="menu-icon" onClick={toggleMenu}>
-                ☰
-              </div>
-              {menuOpen && (
-                  <div className="menu-content">
-                    <Link to="/account">Account</Link>
-                    <Link to="/settings">Settings</Link>
-                    <Link to="/preferences">Preferences</Link>
-                  </div>
-              )}
-            </div>
-            <div className="shopping-cart">
-              <Link to="/cart">
-                🛒 <span className="cart-item-count"></span> {/* Show the cart item count */}
-              </Link>
-            </div>
-            <div className="username">{localStorage.getItem("userName")}</div>
+    <div className="cart-page">
+      {/* Top bar with username and navigation */}
+      <div className="top-bar">
+        <div className="top-left">
+          <div className="hamburger-menu">
+            <div className="menu-icon">☰</div>
           </div>
-          <div className="nav-buttons">
-            <Link to="/normalorder" className="nav-btn-normal1">Normal</Link>
-            <Link to="/quickorder" className="nav-btn-quick1">Quick</Link>
+          <div className="shopping-cart">
+            🛒 <span className="cart-item-count">{totalCartItems}</span> {/* Display number of items in cart */}
           </div>
         </div>
+        <div className="username">{localStorage.getItem("userName")}</div>
+        <div className="nav-buttons">
+          <Link to="/normalorder" className="nav-btn">Normal</Link>
+          <Link to="/quickorder" className="nav-btn">Quick</Link>
+        </div>
+      </div>
 
-        {/* Cart Items */}
-        <div className="cart-section">
-          <h2>Items in Your Cart</h2>
-
-          {/* <CartItemCard
+      {/* Cart Items */}
+      <div className="cart-section">
+        <h2>Items in Your Cart</h2>
+        
+        {/* <CartItemCard 
         item={{ pizza: { name: 'Dummy Pizza', price: 0 }, quantity: 1 }}
         type="pizza"
         increaseQuantity={increaseQuantity}
@@ -194,49 +212,64 @@ function CartPage() {
         index={-1}
         /> */}
 
-          {/* Render pizzas */}
-          {cartItems.pizza.map((item, index) => (
-              <CartItemCard
-                  key={index}
-                  item={item}
-                  type="pizza"
-                  index={index}
-                  increaseQuantity={increaseQuantity}
-                  decreaseQuantity={decreaseQuantity}
-              />
-          ))}
+        {/* Render pizzas */}
+        {cartItems.pizza.map((item, index) => (
+          <CartItemCard
+            key={index}
+            item={item}
+            type="pizza"
+            index={index}
+            increaseQuantity={increaseQuantity}
+            decreaseQuantity={decreaseQuantity}
+          />
+        ))}
 
-          {/* Render drinks */}
-          {cartItems.drink.map((item, index) => (
-              <CartItemCard
-                  key={index}
-                  item={item}
-                  type="drink"
-                  index={index}
-                  increaseQuantity={increaseQuantity}
-                  decreaseQuantity={decreaseQuantity}
-              />
-          ))}
+        {/* Render drinks */}
+        {cartItems.drink.map((item, index) => (
+          <CartItemCard
+            key={index}
+            item={item}
+            type="drink"
+            index={index}
+            increaseQuantity={increaseQuantity}
+            decreaseQuantity={decreaseQuantity}
+          />
+        ))}
 
-          {/* Render desserts */}
-          {cartItems.dessert.map((item, index) => (
-              <CartItemCard
-                  key={index}
-                  item={item}
-                  type="dessert"
-                  index={index}
-                  increaseQuantity={increaseQuantity}
-                  decreaseQuantity={decreaseQuantity}
-              />
-          ))}
-        </div>
-
-        {/* Total and Confirm Order */}
-        <div className="total-section">
-          <h2>Total: {totalPrice.toFixed(2)} €</h2>
-          <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
-        </div>
+        {/* Render desserts */}
+        {cartItems.dessert.map((item, index) => (
+          <CartItemCard
+            key={index}
+            item={item}
+            type="dessert"
+            index={index}
+            increaseQuantity={increaseQuantity}
+            decreaseQuantity={decreaseQuantity}
+          />
+        ))}
       </div>
+
+      {/* Total and Confirm Order Section */}
+      <div className="total-section">
+        {/* Input field and button for discount code */}
+        <div className="discount-section">
+          <input
+            type="text"
+            placeholder="Enter discount code"
+            value={discountCode}
+            onChange={handleDiscountCodeChange}
+          />
+          <button onClick={handleRedeemDiscount}>Redeem Discount</button>
+        </div>
+
+        {/* Show discount message */}
+        {discountMessage && <p>{discountMessage}</p>}
+
+        {/* Total price and confirm order */}
+        <h2>Total: {totalPrice.toFixed(2)} €</h2>
+        <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
+      </div>
+    </div>
   );
 }
 
