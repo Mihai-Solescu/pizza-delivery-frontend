@@ -22,9 +22,11 @@ function CartItemCard({ item, type, increaseQuantity, decreaseQuantity, index })
 }
 
 function CartPage() {
-  const [cartItems, setCartItems] = useState({pizza: [], drink: [], dessert: [] }); // Initialize cartItems as an object with arrays
+  const [cartItems, setCartItems] = useState({pizza: [], drink: [], dessert: [] }); // Initialize cartItems as an object with arrays for each type
   const [totalPrice, setTotalPrice] = useState(0); 
-  const [totalCartItems, setTotalCartItems] = useState(0); // Initialize totalCartItems state
+  const [totalCartItems, setTotalCartItems] = useState(0);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountMessage, setDiscountMessage] = useState('');
 
   const fetchTotalPrice = async () => {
     const token = localStorage.getItem('accessToken');
@@ -89,7 +91,7 @@ function CartPage() {
       console.error(`No item found at index ${index} for type ${type}`);
       return;
     }
-    
+
     const token = localStorage.getItem('accessToken');
     try {
       await axios.post('http://localhost:8000/orders/add-item/', {
@@ -132,15 +134,47 @@ function CartPage() {
     }
   };
 
+  // Handle discount code redemption
+  const handleRedeemDiscount = async () => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/orders/redeem-discount/', // Replace with your actual endpoint
+        { discount_code: discountCode }, // Send the discount code in the request body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Assuming the response includes the updated total price after applying the discount
+      setTotalPrice(response.data.total_price); 
+      setDiscountMessage('Discount applied successfully!');
+    } catch (error) {
+      setDiscountMessage('Failed to apply discount.');
+      console.error('Error redeeming discount:', error);
+    }
+  };
+
+  // Handle input changes for the discount code
+  const handleDiscountCodeChange = (event) => {
+    setDiscountCode(event.target.value);
+  };
+
   // Confirm Order
   const handleConfirmOrder = async () => {
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post('http://localhost:8000/orders/finalize/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    await axios.post(
+      'http://localhost:8000/orders/finalize/',
+      {}, // No data to send, so pass an empty object
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       alert('Order Confirmed!');
     } catch (error) {
       console.log('Failed to confirm order', error);
@@ -215,8 +249,23 @@ function CartPage() {
         ))}
       </div>
 
-      {/* Total and Confirm Order */}
+      {/* Total and Confirm Order Section */}
       <div className="total-section">
+        {/* Input field and button for discount code */}
+        <div className="discount-section">
+          <input
+            type="text"
+            placeholder="Enter discount code"
+            value={discountCode}
+            onChange={handleDiscountCodeChange}
+          />
+          <button onClick={handleRedeemDiscount}>Redeem Discount</button>
+        </div>
+
+        {/* Show discount message */}
+        {discountMessage && <p>{discountMessage}</p>}
+
+        {/* Total price and confirm order */}
         <h2>Total: {totalPrice.toFixed(2)} €</h2>
         <button className="confirm-order-btn" onClick={handleConfirmOrder}>Confirm Order</button>
       </div>
