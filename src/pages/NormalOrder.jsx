@@ -8,76 +8,85 @@ import try_tag from '../assets/try_tag.png';
 import rate_tag from '../assets/rate_tag.png';
 import order_tag from '../assets/order_tag.png';
 
-function PizzaDetailsModal({ pizza, onClose }) {
+function PizzaDetailsModal({ pizza, onClose, setSelectedPizza, handleUpdatePizza }) {
   const defaultPizzaImage = "https://media.istockphoto.com/id/1671506157/nl/foto/slice-of-pizza-melted-cheese-stretches-from-the-piece.jpg?s=2048x2048&w=is&k=20&c=rEGVINGvZneoC6KtYBtB11ySq6cqD6nAhjMdgtyrkIA=";
 
-   const [userRating, setUserRating] = useState(pizza.rating || 0);
+  const [userRating, setUserRating] = useState();
+
+  useEffect(() => {
+    if (pizza && userRating === undefined) {
+      setUserRating(pizza.rating || 0);
+    }
+  }, [pizza, userRating]);
 
   const handleRating = async (rating) => {
-    setUserRating(rating);
-
     const token = localStorage.getItem('accessToken');
-    try {
-        // Send a POST request to update the pizza rating in the backend
-        const response = await axios.post(
-            `http://localhost:8000/menu/pizza/${pizza.pizza_id}/rating`,  // Assuming this is the correct URL for your rating API
-            { rating },  // Send the new rating as part of the request body
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,  // Include the access token for authentication
-                },
-            }
-        );
 
-        // Log success or handle additional logic based on response
-        console.log('Rating updated successfully:', response.data);
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/menu/pizza/${pizza.pizza_id}/rating`,
+        { rating },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const updatedPizza = { ...pizza, rating: rating };
+        setUserRating(rating);
+        setSelectedPizza(updatedPizza);
+
+        // Update the pizza list in the main component
+        handleUpdatePizza(updatedPizza);
+      }
     } catch (error) {
-        console.error('Error updating rating:', error);
-        // Optionally handle error feedback to the user
+      console.error('Error updating rating:', error);
     }
-};
+  };
 
   if (!pizza) return null;
 
   return (
-      <div className="modal-overlay" onClick={onClose}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <div className="modal-header">
-            <h1>{pizza.name}</h1>
-            <button className="close-button" onClick={onClose}>X</button>
-          </div>
-          <img src={defaultPizzaImage} alt={pizza.name} className="details-pizza-image"/>
-          <p><strong>Description:</strong> {pizza.description || 'No description available'}</p>
-          <p><strong>Price:</strong> {pizza.price} €</p>
-          <p><strong>Vegan:</strong> {pizza.is_vegan ? 'No' : 'Yes'}</p>
-          <p><strong>Vegetarian:</strong> {pizza.is_vegetarian ? 'Yes' : 'No'}</p>
-          <p><strong>Ingredients:</strong></p>
-          <div className="ingredient-list">
-            <ul>
-              {pizza.ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient.name} - {ingredient.price} €</li>
-              ))}
-            </ul>
-          </div>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h1>{pizza.name}</h1>
+          <button className="close-button" onClick={onClose}>X</button>
+        </div>
+        <img src={defaultPizzaImage} alt={pizza.name} className="details-pizza-image" />
+        <p><strong>Description:</strong> {pizza.description || 'No description available'}</p>
+        <p><strong>Price:</strong> {pizza.price} €</p>
+        <p><strong>Vegan:</strong> {pizza.is_vegan ? 'No' : 'Yes'}</p>
+        <p><strong>Vegetarian:</strong> {pizza.is_vegetarian ? 'Yes' : 'No'}</p>
+        <p><strong>Ingredients:</strong></p>
+        <div className="ingredient-list">
+          <ul>
+            {pizza.ingredients.map((ingredient, index) => (
+              <li key={index}>{ingredient.name} - {ingredient.price} €</li>
+            ))}
+          </ul>
+        </div>
 
-          <div className="rating-section">
-            <strong>Rating:</strong>
-            <div className="stars">
-              {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                      key={star}
-                      className={star <= userRating ? 'star filled' : 'star'}
-                      onClick={() => handleRating(star)}
-                  >
-            &#9733;
-          </span>
-              ))}
-            </div>
+        <div className="rating-section">
+          <strong>Rating:</strong>
+          <div className="stars">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={star <= userRating ? 'star filled' : 'star'}
+                onClick={() => handleRating(star)}
+              >
+                &#9733;
+              </span>
+            ))}
           </div>
         </div>
       </div>
+    </div>
   );
-}
+};
 
 function NormalOrder() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -89,7 +98,6 @@ function NormalOrder() {
   const [preferences, setPreferences] = useState({
     favourite_sauce: 0, // default to Tomato
     cheese_preference: 0, // default to Mozzarella
-    // Initialize toppings with a neutral preference (could be 0 for Neutral, 1 for Like, 2 for Dislike)
     toppings: {
       pepperoni: 0,
       mushrooms: 0,
@@ -114,11 +122,11 @@ function NormalOrder() {
       spinach: 0,
       feta_cheese: 0,
     },
-    spiciness_level: 0, // default to Mild
+    spiciness_level: 0,
     is_vegetarian: false,
     is_vegan: false,
-    pizza_size: 1, // default to Medium
-    budget_range: 7.00, // default to 7
+    pizza_size: 1,
+    budget_range: 7.00,
   });
 
   const [preferencesLoading, setPreferencesLoading] = useState(true);
@@ -145,7 +153,7 @@ function NormalOrder() {
           const updatedPreferences = {
             favourite_sauce: responseData.favourite_sauce || 0,
             cheese_preference: responseData.cheese_preference || 0,
-            toppings: {}, // Initialize empty toppings
+            toppings: {},
             spiciness_level: responseData.spiciness_level || 0,
             is_vegetarian: responseData.is_vegetarian || false,
             is_vegan: responseData.is_vegan || false,
@@ -162,7 +170,7 @@ function NormalOrder() {
       } catch (error) {
         console.error('Error fetching preferences:', error);
       } finally {
-        setPreferencesLoading(false); // Mark preferences loading as finished
+        setPreferencesLoading(false);
       }
     };
 
@@ -181,14 +189,12 @@ function NormalOrder() {
           budget_range: preferences.budget_range,
           is_vegetarian: preferences.is_vegetarian,
           is_vegan: preferences.is_vegan,
-        })
+        });
 
         // Add toppings preferences as separate query parameters
         Object.entries(preferences.toppings).forEach(([topping, preference]) => {
           queryParams.append(`${topping}`, preference);
         });
-
-        console.log(queryParams.toString());
 
         const response = await axios.get(`http://localhost:8000/menu/pizzalist/?${queryParams}`, {
           headers: {
@@ -204,10 +210,10 @@ function NormalOrder() {
       }
     };
 
-   if (!preferencesLoading) {
+    if (!preferencesLoading) {
       fetchPizzas();
     }
-  }, [preferences, preferencesLoading]); // Dependency array includes preferences
+  }, [preferences, preferencesLoading]);
 
   const handlePizzaClick = (pizza) => {
     setSelectedPizza(pizza);
@@ -219,38 +225,41 @@ function NormalOrder() {
     setSelectedPizza(null);
   };
 
+  // Function to update pizza in the pizzas list
+  const handleUpdatePizza = (updatedPizza) => {
+    const updatedPizzas = pizzas.map(pizza =>
+      pizza.pizza_id === updatedPizza.pizza_id ? updatedPizza : pizza
+    );
+    setPizzas(updatedPizzas);
+  };
+
   const handleTagClick = (pizzaId, tagName) => {
-    // Find the pizza in the current state
-  const updatedPizzas = pizzas.map(pizza => {
-    if (pizza.pizza_id === pizzaId) {
-      // Toggle the specific tag
-      const updatedTags = { ...pizza.tags, [tagName]: !pizza.tags[tagName] };
+    const updatedPizzas = pizzas.map(pizza => {
+      if (pizza.pizza_id === pizzaId) {
+        const updatedTags = { ...pizza.tags, [tagName]: !pizza.tags[tagName] };
 
-      // Send the POST request to update the tag on the backend
-      const token = localStorage.getItem('accessToken');
-      axios.post(`http://localhost:8000/menu/pizza/${pizzaId}/tags/`, {
-        rate_tag: updatedTags.rate_tag,
-        order_tag: updatedTags.order_tag,
-        try_tag: updatedTags.try_tag,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      }).then(response => {
-        console.log(`Tag updated: ${response.data}`);
-      }).catch(err => {
-        console.error(`Error updating tag: ${err}`);
-      });
+        const token = localStorage.getItem('accessToken');
+        axios.post(`http://localhost:8000/menu/pizza/${pizzaId}/tags/`, {
+          rate_tag: updatedTags.rate_tag,
+          order_tag: updatedTags.order_tag,
+          try_tag: updatedTags.try_tag,
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }).then(response => {
+          console.log(`Tag updated: ${response.data}`);
+        }).catch(err => {
+          console.error(`Error updating tag: ${err}`);
+        });
 
-      // Return the updated pizza with the new tag state
-      return { ...pizza, tags: updatedTags };
-    }
-    return pizza;
-  });
+        return { ...pizza, tags: updatedTags };
+      }
+      return pizza;
+    });
 
-  // Update the pizzas state with the updated tags
-  setPizzas(updatedPizzas);
-};
+    setPizzas(updatedPizzas);
+  };
 
   if (loading) {
     return <div>Loading pizzas...</div>;
@@ -269,11 +278,11 @@ function NormalOrder() {
               ☰
             </div>
             {menuOpen && (
-                <div className="menu-content">
-                  <Link to="/account">Account</Link>
-                  <Link to="/settings">Settings</Link>
-                  <Link to="/preferences">Preferences</Link>
-                </div>
+              <div className="menu-content">
+                <Link to="/account">Account</Link>
+                <Link to="/settings">Settings</Link>
+                <Link to="/preferences">Preferences</Link>
+              </div>
             )}
           </div>
           <div className="shopping-cart">
@@ -343,9 +352,10 @@ function NormalOrder() {
         </div>
       </div>
 
-      {showModal && <PizzaDetailsModal pizza={selectedPizza} onClose={handleCloseModal} />}
+      {showModal && <PizzaDetailsModal pizza={selectedPizza} onClose={handleCloseModal} setSelectedPizza={setSelectedPizza} handleUpdatePizza={handleUpdatePizza} />}
     </div>
   );
 }
 
 export default NormalOrder;
+
