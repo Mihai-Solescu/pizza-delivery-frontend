@@ -27,6 +27,7 @@ function CartPage() {
   const [totalCartItems, setTotalCartItems] = useState(0);
   const [discountCode, setDiscountCode] = useState('');
   const [discountMessage, setDiscountMessage] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const fetchTotalPrice = async () => {
     const token = localStorage.getItem('accessToken');
@@ -164,9 +165,14 @@ function CartPage() {
 
   // Confirm Order
   const handleConfirmOrder = async () => {
+    if (totalCartItems === 0) {
+      alert('Add items to cart before confirming order');
+      return;
+    }
+
     const token = localStorage.getItem('accessToken');
     try {
-    await axios.post(
+      await axios.post(
       'http://localhost:8000/orders/finalize/',
       {}, // No data to send, so pass an empty object
         {
@@ -176,9 +182,14 @@ function CartPage() {
         }
       );
       alert('Order Confirmed!');
+      window.location.href = '/delivery';
     } catch (error) {
       console.log('Failed to confirm order', error);
     }
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
@@ -187,7 +198,16 @@ function CartPage() {
       <div className="top-bar">
         <div className="top-left">
           <div className="hamburger-menu">
-            <div className="menu-icon">☰</div>
+            <div className="menu-icon" onClick={toggleMenu}>
+              ☰
+            </div>
+            {menuOpen && (
+              <div className="menu-content">
+                <Link to="/account">Account</Link>
+                <Link to="/settings">Settings</Link>
+                <Link to="/preferences">Preferences</Link>
+              </div>
+            )}
           </div>
           <div className="shopping-cart">
             🛒 <span className="cart-item-count">{totalCartItems}</span> {/* Display number of items in cart */}
