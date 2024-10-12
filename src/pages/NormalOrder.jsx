@@ -181,9 +181,14 @@ function NormalOrder() {
           budget_range: preferences.budget_range,
           is_vegetarian: preferences.is_vegetarian,
           is_vegan: preferences.is_vegan,
-        }).toString();
+        })
 
-        console.log(queryParams)
+        // Add toppings preferences as separate query parameters
+        Object.entries(preferences.toppings).forEach(([topping, preference]) => {
+          queryParams.append(`${topping}`, preference);
+        });
+
+        console.log(queryParams.toString());
 
         const response = await axios.get(`http://localhost:8000/menu/pizzalist/?${queryParams}`, {
           headers: {
