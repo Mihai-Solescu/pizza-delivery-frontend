@@ -200,7 +200,7 @@ function NormalOrder() {
       const token = localStorage.getItem('accessToken');
       try {
         const queryParams = new URLSearchParams({
-          smart: 'false',
+          smart: 'true',
           order_type: 'normal',
           budget_range: preferences.budget_range,
           is_vegetarian: preferences.is_vegetarian,

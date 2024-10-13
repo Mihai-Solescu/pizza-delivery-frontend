@@ -182,7 +182,7 @@ function CartPage() {
         }
       );
       alert('Order Confirmed!');
-      window.location.href = '/delivery';
+      window.location.href = '/deliverystatus';
     } catch (error) {
       console.log('Failed to confirm order', error);
     }
