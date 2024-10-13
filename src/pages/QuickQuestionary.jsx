@@ -116,21 +116,6 @@ const QuickQuestionary = () => {
       <h1>Please fill in your preferences</h1>
       <form onSubmit={handleQuestionnaireSubmit}>
 
-        {/* Spiciness Level */}
-        <div className="form-group">
-          <label>
-            Spiciness Level:
-            <select
-              value={preferences.spiciness_level}
-              onChange={(e) => setPreferences({ ...preferences, spiciness_level: parseInt(e.target.value) })}
-            >
-              <option value={0}>Mild</option>
-              <option value={1}>Medium</option>
-              <option value={2}>Spicy</option>
-            </select>
-          </label>
-        </div>
-
         {/* Dietary Restrictions */}
         <div className="form-group">
           <label>

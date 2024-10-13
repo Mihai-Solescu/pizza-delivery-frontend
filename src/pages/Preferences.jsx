@@ -31,7 +31,13 @@ const Preferences = () => {
       spinach: 0,
       feta_cheese: 0,
     },
-    spiciness_level: 0, // default to Mild
+    // Add the required variables for the filters
+    spicy: 0.000, // default to 0.000
+    is_meat: 0.000, // default to 0.000
+    is_vegetable: 0.000, // default to 0.000
+    cheesy: 0.000, // default to 0.000
+    sweet: 0.000, // default to 0.000
+    salty: 0.000, // default to 0.000
     is_vegetarian: false,
     is_vegan: false,
     pizza_size: 1, // default to Medium
@@ -106,37 +112,6 @@ const Preferences = () => {
       <h1>Please fill in your preferences</h1>
       <form onSubmit={handleQuestionnaireSubmit}>
 
-        {/* Favorite Sauce Preference */}
-        <div className="form-group">
-          <label>
-            Favorite Sauce:
-            <select
-              value={preferences.favourite_sauce}
-              onChange={(e) => setPreferences({ ...preferences, favourite_sauce: parseInt(e.target.value) })}
-            >
-              <option value={0}>Tomato</option>
-              <option value={1}>Pesto</option>
-              <option value={2}>White Sauce</option>
-            </select>
-          </label>
-        </div>
-
-        {/* Cheese Preference */}
-        <div className="form-group">
-          <label>
-            Cheese Preference:
-            <select
-              value={preferences.cheese_preference}
-              onChange={(e) => setPreferences({ ...preferences, cheese_preference: parseInt(e.target.value) })}
-            >
-              <option value={0}>Mozzarella</option>
-              <option value={1}>Cheddar</option>
-              <option value={2}>No Cheese</option>
-              <option value={3}>Vegan Cheese</option>
-            </select>
-          </label>
-        </div>
-
         {/* Toppings Selection */}
         <div className="form-group">
           <label>Preferred Toppings:</label>
@@ -183,14 +158,95 @@ const Preferences = () => {
         <div className="form-group">
           <label>
             Spiciness Level:
-            <select
-              value={preferences.spiciness_level}
-              onChange={(e) => setPreferences({ ...preferences, spiciness_level: parseInt(e.target.value) })}
-            >
-              <option value={0}>Mild</option>
-              <option value={1}>Medium</option>
-              <option value={2}>Spicy</option>
-            </select>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={preferences.spicy}
+              onChange={(e) => setPreferences({ ...preferences, spicy: parseFloat(e.target.value) })}
+            />
+            <span>{preferences.spicy}</span>
+          </label>
+        </div>
+
+        {/* Sweet Level */}
+        <div className="form-group">
+          <label>
+            Sweet Level:
+            <input
+              type="range"
+              min="0"
+              max="10"
+              step="0.01"
+              value={preferences.sweet}
+              onChange={(e) => setPreferences({ ...preferences, sweet: parseFloat(e.target.value) })}
+            />
+            <span>{preferences.sweet}</span>
+          </label>
+        </div>
+
+        {/* Salty Level */}
+        <div className="form-group">
+          <label>
+            Salt Level:
+            <input
+              type="range"
+              min="0"
+              max="10"
+              step="0.001"
+              value={preferences.salty}
+              onChange={(e) => setPreferences({ ...preferences, salty: parseFloat(e.target.value) })}
+            />
+            <span>{preferences.salty}</span>
+          </label>
+        </div>
+
+        {/* Meat Level */}
+        <div className="form-group">
+          <label>
+            Meaty:
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={preferences.is_meat}
+              onChange={(e) => setPreferences({ ...preferences, is_meat: parseFloat(e.target.value) })}
+            />
+            <span>{preferences.is_meat}</span>
+          </label>
+        </div>
+
+        {/* Vegetable Level */}
+        <div className="form-group">
+          <label>
+            Vegetable:
+            <input
+              type="range"
+              min="0"
+              max="10"
+              step="0.01"
+              value={preferences.is_vegetable}
+              onChange={(e) => setPreferences({ ...preferences, is_vegetable: parseFloat(e.target.value) })}
+            />
+            <span>{preferences.is_vegetable}</span>
+          </label>
+        </div>
+
+        {/* Cheesy Level */}
+        <div className="form-group">
+          <label>
+            Cheesy:
+            <input
+              type="range"
+              min="0"
+              max="10"
+              step="0.01"
+              value={preferences.cheesy}
+              onChange={(e) => setPreferences({ ...preferences, cheesy: parseFloat(e.target.value) })}
+            />
+            <span>{preferences.cheesy}</span>
           </label>
         </div>
 
@@ -217,20 +273,6 @@ const Preferences = () => {
           </label>
         </div>
 
-        {/* Pizza Size */}
-        <div className="form-group">
-          <label>
-            Pizza Size:
-            <select
-              value={preferences.pizza_size}
-              onChange={(e) => setPreferences({ ...preferences, pizza_size: parseInt(e.target.value) })}
-            >
-              <option value={0}>Small</option>
-              <option value={1}>Medium</option>
-              <option value={2}>Large</option>
-            </select>
-          </label>
-        </div>
 
         {/* Budget Range */}
         <div className="form-group">
