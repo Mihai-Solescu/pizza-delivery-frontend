@@ -1,0 +1,232 @@
+/* src/pages/Earnings.css */
+
+/* =========================
+   1. CSS Variables for Theming
+   ========================= */
+   :root {
+    /* Primary Colors */
+    --primary-color: #007BFF;
+    --primary-hover: #0056b3;
+    --secondary-color: #28a745;
+    --secondary-hover: #218838;
+    --tertiary-color: #6c757d;
+    --tertiary-hover: #5a6268;
+
+    /* Background Colors */
+    --background-color: #f9f9f9;
+    --light-background: #e9ecef;
+    --white: #ffffff;
+
+    /* Text Colors */
+    --text-color: #343a40;
+    --error-color: #dc3545;
+
+    /* Font Settings */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-base: 16px;
+
+    /* Spacing */
+    --spacing-small: 8px;
+    --spacing-medium: 16px;
+    --spacing-large: 24px;
+}
+
+/* =========================
+   2. Container Styles
+   ========================= */
+.earnings-container {
+    padding: var(--spacing-large);
+    font-family: var(--font-family);
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.earnings-container h1 {
+    text-align: center;
+    margin-bottom: var(--spacing-large);
+    font-size: 2em;
+    color: var(--text-color);
+}
+
+/* =========================
+   3. Back Link Styles
+   ========================= */
+.back-link {
+    text-align: center;
+    margin-bottom: var(--spacing-medium);
+}
+
+.back-link a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+    color: var(--primary-hover);
+}
+
+/* =========================
+   4. Filter Form Styles
+   ========================= */
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--spacing-medium);
+    margin-bottom: var(--spacing-medium);
+    background-color: var(--background-color);
+    padding: var(--spacing-medium);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-item label {
+    margin-bottom: var(--spacing-small);
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.filter-item select,
+.filter-item input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-item select:focus,
+.filter-item input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* =========================
+   5. Filter Buttons Styles
+   ========================= */
+.filter-buttons {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-small);
+}
+
+.apply-filters-btn,
+.reset-filters-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.apply-filters-btn {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}
+
+.apply-filters-btn:hover {
+    background-color: var(--secondary-hover);
+    transform: translateY(-2px);
+}
+
+.reset-filters-btn {
+    background-color: var(--tertiary-color);
+    color: var(--white);
+}
+
+.reset-filters-btn:hover {
+    background-color: var(--tertiary-hover);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   6. Earnings Result Styles
+   ========================= */
+.earnings-result {
+    text-align: center;
+    margin-top: var(--spacing-medium);
+}
+
+.earnings-display {
+    background-color: var(--light-background);
+    padding: var(--spacing-medium);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.earnings-display h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.8em;
+}
+
+/* =========================
+   7. Loading and Error Styles
+   ========================= */
+.loading {
+    text-align: center;
+    font-size: 1.125rem;
+    margin-top: var(--spacing-large);
+    color: var(--text-color);
+}
+
+.error-message {
+    color: var(--error-color);
+    text-align: center;
+    margin-top: var(--spacing-medium);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* =========================
+   8. Responsive Design
+   ========================= */
+@media (max-width: 768px) {
+    .earnings-container {
+        padding: calc(var(--spacing-large) / 1.5);
+    }
+    
+    .filter-form {
+        padding: calc(var(--spacing-medium) / 1.5);
+    }
+    
+    .filter-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-buttons {
+        flex-direction: column;
+        gap: var(--spacing-small);
+    }
+    
+    .apply-filters-btn,
+    .reset-filters-btn {
+        width: 100%;
+    }
+    
+    .earnings-display h2 {
+        font-size: 1.5em;
+    }
+}

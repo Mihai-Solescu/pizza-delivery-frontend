@@ -8,6 +8,10 @@ import CartPage from './pages/CartPage.jsx';
 import QuickOrder from "./pages/QuickOrder.jsx";
 import QuickQuestionary from "./pages/QuickQuestionary.jsx";
 import DeliveryStatusPage from './pages/DeliveryStatus.jsx'; 
+import EarningsPage from './pages/Earnings.jsx';
+import DeliveryPersonnelManagement from './pages/DeliveryPersonnelManagement.jsx';
+import DeliveryPersonDashboard from './pages/DeliveryPersonDashboard.jsx';
+import RestaurantDashboard from './pages/RestaurantDashboard.jsx';
 
 function App() {
   return (
@@ -17,11 +21,15 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/normalorder" element={<NormalOrder />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/preferences" element={<Preferences />} /> {/* Questionnaire page */}
+        <Route path="/preferences" element={<Preferences />} />
         <Route path="/account" element={<Account />} />
         <Route path="/quickorder" element={<QuickOrder />} />
         <Route path="/quickquestionary" element={<QuickQuestionary />} />
         <Route path="/deliverystatus" element={<DeliveryStatusPage />} />
+        <Route path="/deliverypersonnel" element={<DeliveryPersonnelManagement />} />
+        <Route path="/earnings" element={<EarningsPage />} />
+        <Route path="/deliverypersondashboard" element={<DeliveryPersonDashboard/>} />
+        <Route path="/restaurantdashboard" element={<RestaurantDashboard/>} />
     </Routes>
   );
 }

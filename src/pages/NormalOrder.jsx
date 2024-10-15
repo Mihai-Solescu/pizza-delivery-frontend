@@ -313,9 +313,6 @@ function NormalOrder() {
             </div>
             {menuOpen && (
               <div className="menu-content">
-                <Link to="/account">Account</Link>
-                <Link to="/settings">Settings</Link>
-                <Link to="/preferences">Preferences</Link>
               </div>
             )}
           </div>
@@ -329,6 +326,11 @@ function NormalOrder() {
         <div className="nav-buttons">
           <Link to="/normalorder" className="nav-btn-normal1">Normal</Link>
           <Link to="/quickorder" className="nav-btn-quick1">Quick</Link>
+          <Link to="/deliverystatus" className="nav-btn-normal1">Delivery Status</Link>
+          <Link to="/earnings" className="nav-btn-normal1">Earnings</Link>
+          <Link to="/account" className="nav-btn-normal1">Account</Link>
+          <Link to="/preferences" className='nav-btn-normal1'>Preferences</Link>
+          <Link to="/restaurantdashboard" className="nav-btn-normal1">Restaurant Dashboard</Link>
         </div>
       </div>
 
