@@ -6,6 +6,26 @@
   justify-content: center; /* Center the main content */
 }
 
+.switch-view-button {
+  position: absolute;
+  top: 100px;
+  left: 10px;
+}
+
+.switch-view-button button {
+  background-color: rgba(0, 128, 0, 0.2); /* Green with transparency */
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%; /* Make the button circular */
+  cursor: pointer;
+}
+
+.switch-view-button button:hover {
+  background-color: rgba(0, 128, 0, 0.5); /* Slightly darker green on hover */
+}
+
+
 /* QuickOrder page container */
 .quick-page {
   width: 100%;

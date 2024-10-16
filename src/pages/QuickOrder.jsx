@@ -4,7 +4,7 @@ import './QuickOrder.css'; // Custom styles for pizza card
 import axios from "axios"; // Import axios for API requests
 
 // Modal component for displaying pizza details
-function Questionnaire_Advise_popup({ onClose, onQuickOrder }) {
+function Questionary_Advise_popup({ onClose, onQuickOrder }) {
   return (
     <div className="advise-overlay" onClick={onClose}>
       <div className="advise-content">
@@ -13,7 +13,7 @@ function Questionnaire_Advise_popup({ onClose, onQuickOrder }) {
         <h3>Preferences will be used by default</h3>
         <div className="option-buttons">
           <button className="refuse-btn" onClick={onQuickOrder}> Skip (use default) </button>
-          <Link to="/quickQuestionnaire" className="accept-btn"> Pass </Link>
+          <Link to="/quickquestionary" className="accept-btn"> Pass </Link>
         </div>
       </div>
     </div>
@@ -25,6 +25,7 @@ function QuickOrder() {
   const [showPopup, setShowPopup] = useState(false); // Controls the modal display
   const [isLoading, setIsLoading] = useState(false); // Optional: Add a loading state
   const [cartItemCount, setCartItemCount] = useState(0); // Cart item count state
+  const [view, setView] = useState(1); // State to switch between the two bodies
   const [preferences, setPreferences] = useState({
     favourite_sauce: 0, // default to Tomato
     cheese_preference: 0, // default to Mozzarella
@@ -181,6 +182,11 @@ function QuickOrder() {
     }
   };
 
+  // Function to switch views
+  const toggleView = () => {
+    setView(view === 1 ? 2 : 1); // Toggle between view 1 and view 2
+  };
+
   return (
     <div className="quick-page">
       <header>
@@ -219,24 +225,55 @@ function QuickOrder() {
         </div>
       </header>
 
-      {/* Big Circular Button */}
-      <div className="big-red-button-container">
-        <button className="big-red-button" onClick={handleBRBClick}>
-          Order via Questionnaire
-        </button>
-      </div>
+      {/* Body 1 */}
+      {view === 1 && (
+        <>
+          <div className="big-red-button-container">
+            <button className="big-red-button" onClick={handleBRBClick}>
+              Order via Questionnaire
+            </button>
+          </div>
 
-      {/* Explanation Text Below the Button */}
-      <div className="quick-order-explanation">
-        <p>
-          This button prompts you to answer a questionnaire. Then, a rule-based system combines your answers with 
-          your preferences to quickly generate an order with one pizza.
-        </p>
+          <div className="quick-order-explanation">
+            <p>
+              This button prompts you to answer a questionnaire. Then, a rule-based system combines your answers with 
+              your preferences to quickly generate an order with one pizza.
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* Body 2 */}
+      {view === 2 && (
+        <>
+          <div className="big-red-button-container">
+            <button className="big-red-button" onClick={handleBRBClick}>
+              Order via Recommender System
+            </button>
+          </div>
+
+          <div className="quick-order-explanation">
+            <p>
+              This button allows you to fully customize your pizza based on your preferences. You can choose the toppings,
+              size, and spiciness to create the perfect pizza for you.
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* Button to Switch Between Views */}
+      <div className="switch-view-button">
+        <button
+          onClick={toggleView}
+          style={{ backgroundColor: view === 1 ? 'rgba(0, 128, 0, 0.2)' : 'rgba(0, 0, 255, 0.2)' }}
+        >
+          {/* No Text */}
+        </button>
       </div>
 
       {/* Show the modal if a pizza is selected */}
       {showPopup && (
-        <Questionnaire_Advise_popup
+        <Questionary_Advise_popup
           onClose={handleClosePopup}
           onQuickOrder={handleQuickOrder} // Pass quick order handler
         />
