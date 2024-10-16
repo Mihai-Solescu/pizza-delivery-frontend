@@ -6,7 +6,7 @@ import Preferences from "./pages/Preferences.jsx";
 import Account from "./pages/Account.jsx";
 import CartPage from './pages/CartPage.jsx';
 import QuickOrder from "./pages/QuickOrder.jsx";
-import QuickQuestionary from "./pages/QuickQuestionary.jsx";
+import QuickQuestionnaire from "./pages/QuickQuestionnaire.jsx";
 import DeliveryStatusPage from './pages/DeliveryStatus.jsx'; 
 import EarningsPage from './pages/Earnings.jsx';
 import DeliveryPersonnelManagement from './pages/DeliveryPersonnelManagement.jsx';
@@ -24,7 +24,7 @@ function App() {
         <Route path="/preferences" element={<Preferences />} />
         <Route path="/account" element={<Account />} />
         <Route path="/quickorder" element={<QuickOrder />} />
-        <Route path="/quickquestionary" element={<QuickQuestionary />} />
+        <Route path="/quickQuestionnaire" element={<QuickQuestionnaire />} />
         <Route path="/deliverystatus" element={<DeliveryStatusPage />} />
         <Route path="/deliverypersonnel" element={<DeliveryPersonnelManagement />} />
         <Route path="/earnings" element={<EarningsPage />} />

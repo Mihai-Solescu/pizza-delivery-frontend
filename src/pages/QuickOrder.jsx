@@ -1,20 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './QuickOrder.css'; // Custom styles for pizza card
-import BRB from '../assets/BRB.png';
-import axios from "axios"; // Import the pizza logo
+import axios from "axios"; // Import axios for API requests
 
 // Modal component for displaying pizza details
-function Questionary_Advise_popup({ onClose, onQuickOrder }) {
+function Questionnaire_Advise_popup({ onClose, onQuickOrder }) {
   return (
     <div className="advise-overlay" onClick={onClose}>
       <div className="advise-content">
         <button className="close-button" onClick={onClose}>X</button>
-        <h2>Do you want to pass small questionary?</h2>
+        <h2>Do you want to pass a small questionnaire?</h2>
         <h3>Preferences will be used by default</h3>
         <div className="option-buttons">
           <button className="refuse-btn" onClick={onQuickOrder}> Skip (use default) </button>
-          <Link to="/quickquestionary" className="accept-btn"> Pass </Link>
+          <Link to="/quickQuestionnaire" className="accept-btn"> Pass </Link>
         </div>
       </div>
     </div>
@@ -25,149 +24,162 @@ function QuickOrder() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // Controls the modal display
   const [isLoading, setIsLoading] = useState(false); // Optional: Add a loading state
+  const [cartItemCount, setCartItemCount] = useState(0); // Cart item count state
   const [preferences, setPreferences] = useState({
-  favourite_sauce: 0, // default to Tomato
-  cheese_preference: 0, // default to Mozzarella
-  // Initialize toppings with a neutral preference (could be 0 for Neutral, 1 for Like, 2 for Dislike)
-  toppings: {
-    pepperoni: 0,
-    mushrooms: 0,
-    onions: 0,
-    olives: 0,
-    sun_dried_tomatoes: 0,
-    bell_peppers: 0,
-    chicken: 0,
-    bacon: 0,
-    ham: 0,
-    sausage: 0,
-    ground_beef: 0,
-    anchovies: 0,
-    pineapple: 0,
-    basil: 0,
-    broccoli: 0,
-    zucchini: 0,
-    garlic: 0,
-    jalapenos: 0,
-    BBQ_sauce: 0,
-    red_peppers: 0,
-    spinach: 0,
-    feta_cheese: 0,
-  },
-  spiciness_level: 0, // default to Mild
-  is_vegetarian: false,
-  is_vegan: false,
-  pizza_size: 1, // default to Medium
-  budget_range: 7.00, // default to 7
-});
+    favourite_sauce: 0, // default to Tomato
+    cheese_preference: 0, // default to Mozzarella
+    toppings: {
+      pepperoni: 0,
+      mushrooms: 0,
+      onions: 0,
+      olives: 0,
+      sun_dried_tomatoes: 0,
+      bell_peppers: 0,
+      chicken: 0,
+      bacon: 0,
+      ham: 0,
+      sausage: 0,
+      ground_beef: 0,
+      anchovies: 0,
+      pineapple: 0,
+      basil: 0,
+      broccoli: 0,
+      zucchini: 0,
+      garlic: 0,
+      jalapenos: 0,
+      BBQ_sauce: 0,
+      red_peppers: 0,
+      spinach: 0,
+      feta_cheese: 0,
+    },
+    spiciness_level: 0, // default to Mild
+    is_vegetarian: false,
+    is_vegan: false,
+    pizza_size: 1, // default to Medium
+    budget_range: 7.00, // default to 7
+  });
 
-const toggleMenu = () => {
-  setMenuOpen(!menuOpen);
-};
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
-// Function to handle pizza click and open the modal
-const handleBRBClick = () => {
-  console.log("Big Red Button clicked!");
-  setShowPopup(true);  // Show the modal
-};
-
-// Function to close the modal
-const handleClosePopup = () => {
-  console.log("Close Button clicked!");
-  setShowPopup(false);  // Hide the modal
-};
-
-// Function to handle the quick order request
-const handleQuickOrder = async () => {
-  setIsLoading(true); // Optional: Set loading state
-  const token = localStorage.getItem('accessToken'); // Get user's auth token if needed
-
-  let pizzaId = null; // Variable to store the pizza ID
-
-  try {
-      const response = await axios.get('http://localhost:8000/customers/preferences/', {
+  useEffect(() => {
+    // Fetch cart item count
+    const fetchCartItemCount = async () => {
+      const token = localStorage.getItem('accessToken');
+      try {
+        const response = await axios.get('http://localhost:8000/orders/itemcount/', {
           headers: {
-              Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
+        });
+        setCartItemCount(response.data.item_count || 0);  // Set the cart item count
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    };
+
+    fetchCartItemCount();
+  }, []);
+
+  // Function to handle pizza click and open the modal
+  const handleBRBClick = () => {
+    console.log("Big Red Button clicked!");
+    setShowPopup(true);  // Show the modal
+  };
+
+  // Function to close the modal
+  const handleClosePopup = () => {
+    console.log("Close Button clicked!");
+    setShowPopup(false);  // Hide the modal
+  };
+
+  // Function to handle the quick order request
+  const handleQuickOrder = async () => {
+    setIsLoading(true); // Optional: Set loading state
+    const token = localStorage.getItem('accessToken'); // Get user's auth token if needed
+
+    let pizzaId = null; // Variable to store the pizza ID
+
+    try {
+      const response = await axios.get('http://localhost:8000/customers/preferences/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      // Transform the response data to fit the preferences model
       if (response.data) {
-          const responseData = response.data;
+        const responseData = response.data;
 
-          const updatedPreferences = {
-              favourite_sauce: responseData.favourite_sauce || 0,
-              cheese_preference: responseData.cheese_preference || 0,
-              toppings: {}, // Initialize empty toppings
-              spiciness_level: responseData.spiciness_level || 0,
-              is_vegetarian: responseData.is_vegetarian || false,
-              is_vegan: responseData.is_vegan || false,
-              pizza_size: responseData.pizza_size || 1,
-              budget_range: responseData.budget_range || 7,
-          };
+        const updatedPreferences = {
+          favourite_sauce: responseData.favourite_sauce || 0,
+          cheese_preference: responseData.cheese_preference || 0,
+          toppings: {},
+          spiciness_level: responseData.spiciness_level || 0,
+          is_vegetarian: responseData.is_vegetarian || false,
+          is_vegan: responseData.is_vegan || false,
+          pizza_size: responseData.pizza_size || 1,
+          budget_range: responseData.budget_range || 7,
+        };
 
-          responseData.toppings.forEach(topping => {
-              updatedPreferences.toppings[topping.name] = topping.preference;
-          });
+        responseData.toppings.forEach(topping => {
+          updatedPreferences.toppings[topping.name] = topping.preference;
+        });
 
-          setPreferences(updatedPreferences);
+        setPreferences(updatedPreferences);
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Error fetching preferences:', error);
-  }
+    }
 
-  try {
-      // Construct query parameters based on preferences
+    try {
       const queryParams = new URLSearchParams({
-          smart: 'false',
-          order_type: 'quick',
-          budget_range: preferences.budget_range,
-          is_vegetarian: preferences.is_vegetarian,
-          is_vegan: preferences.is_vegan,
+        smart: 'false',
+        order_type: 'quick',
+        budget_range: preferences.budget_range,
+        is_vegetarian: preferences.is_vegetarian,
+        is_vegan: preferences.is_vegan,
       }).toString();
 
-      console.log(queryParams);
-
       const response = await axios.get(`http://localhost:8000/menu/pizzalist/?${queryParams}`, {
-          headers: {
-              Authorization: `Bearer ${token}`,
-          },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      console.log(response.data);
       if (response.data.length > 0) {
-          const selectedPizza = response.data[0]; // Store the first pizza in a variable
-          pizzaId = selectedPizza.id; // Store the pizza's ID
-          alert('pizza-' + selectedPizza.name); // Notify user
+        const selectedPizza = response.data[0]; // Store the first pizza in a variable
+        pizzaId = selectedPizza.id; // Store the pizza's ID
+        alert('pizza-' + selectedPizza.name); // Notify user
       }
 
-      // Redirect or update the UI with the quick order details
       setShowPopup(false); // Close the modal
-  } catch (error) {
+    } catch (error) {
       console.error('Error during quick order request:', error);
       alert('An error occurred. Please try again.');
-  } finally {
+    } finally {
       setIsLoading(false); // Optional: Clear loading state
-  }
+    }
 
-  if (pizzaId) {
+    if (pizzaId) {
       try {
-          await axios.post(
-              'http://localhost:8000/orders/add-item/',
-              {
-                  item_type: 'pizza',
-                  item_id: pizzaId, // Use the stored pizza ID here
-                  quantity: 1,
-              },
-              { headers: { Authorization: `Bearer ${token}` } }
-          );
-          window.location.href = '/cart';
+        await axios.post(
+          'http://localhost:8000/orders/add-item/',
+          {
+            item_type: 'pizza',
+            item_id: pizzaId, // Use the stored pizza ID here
+            quantity: 1,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        window.location.href = '/cart';
       } catch (error) {
-          console.error('Failed to add item to cart:', error);
+        console.error('Failed to add item to cart:', error);
       }
-  } else {
+    } else {
       console.error('No pizza selected to add to the cart.');
-  }
-};
+    }
+  };
 
   return (
     <div className="quick-page">
@@ -186,30 +198,45 @@ const handleQuickOrder = async () => {
                 </div>
               )}
             </div>
-            {/* Shopping Cart Icon */}
+            {/* Shopping Cart Icon with Item Count */}
             <div className="shopping-cart">
-              <Link to="/cart">🛒</Link>
+              <Link to="/cart">
+                🛒 <span className="cart-item-count">{cartItemCount}</span> {/* Show the cart item count */}
+              </Link>
             </div>
             <div className="username">{localStorage.getItem("userName")}</div>
           </div>
 
           <div className="nav-buttons">
-            <Link to="/normalorder" className="nav-btn-normal">Normal</Link>
-            <Link to="/quickorder" className="nav-btn-quick">Quick</Link>
+            <Link to="/normalorder" className="nav-btn-normal1">Normal</Link>
+            <Link to="/quickorder" className="nav-btn-quick1">Quick</Link>
+            <Link to="/deliverystatus" className="nav-btn-normal1">Delivery Status</Link>
+            <Link to="/earnings" className="nav-btn-normal1">Earnings</Link>
+            <Link to="/account" className="nav-btn-normal1">Account</Link>
+            <Link to="/preferences" className='nav-btn-normal1'>Preferences</Link>
+            <Link to="/restaurantdashboard" className="nav-btn-normal1">Restaurant Dashboard</Link>
           </div>
         </div>
       </header>
 
-      {/* Big Red Button */}
+      {/* Big Circular Button */}
       <div className="big-red-button-container">
         <button className="big-red-button" onClick={handleBRBClick}>
-          <img src={BRB} alt="Big Red Button" />
+          Order via Questionnaire
         </button>
+      </div>
+
+      {/* Explanation Text Below the Button */}
+      <div className="quick-order-explanation">
+        <p>
+          This button prompts you to answer a questionnaire. Then, a rule-based system combines your answers with 
+          your preferences to quickly generate an order with one pizza.
+        </p>
       </div>
 
       {/* Show the modal if a pizza is selected */}
       {showPopup && (
-        <Questionary_Advise_popup
+        <Questionnaire_Advise_popup
           onClose={handleClosePopup}
           onQuickOrder={handleQuickOrder} // Pass quick order handler
         />

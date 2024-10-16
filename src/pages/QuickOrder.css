@@ -123,32 +123,41 @@
   font-size: 16px;
 }
 
-/* Big Red Button container */
 .big-red-button-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh; /* Take up the full height of the screen */
-  position: relative;
-  top: -80px; /* Offset for the fixed header */
+  margin-top: 20px; /* Reduced margin */
 }
 
-/* Big Red Button styling */
 .big-red-button {
-  background-color: transparent;
+  background-color: red;
+  color: white;
+  font-size: 18px; /* Reduced font size */
+  font-weight: bold;
+  padding: 30px; /* Reduced padding */
+  border-radius: 50%; /* Keep button circular */
   border: none;
-  border-radius: 50%;
   cursor: pointer;
+  outline: none;
+  width: 200px; /* Reduced width */
+  height: 200px; /* Reduced height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.big-red-button:focus {
-  outline: none; /* Prevent border on focus */
+.big-red-button:hover {
+  background-color: darkred;
 }
 
-.big-red-button img {
-  width: 100%; /* Set image size */
-  height: 100%;
-  object-fit: contain;
+.quick-order-explanation {
+  text-align: center;
+  margin-top: 10px; /* Reduced margin */
+  font-size: 16px; /* Reduced font size */
+  color: #333;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Modal Popup styling */

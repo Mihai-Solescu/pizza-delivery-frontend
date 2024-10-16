@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Questionary.css'; // Custom CSS for styling
+import './Questionnaire.css'; // Custom CSS for styling
 
-const QuickQuestionary = () => {
+const QuickQuestionnaire = () => {
   const [preferences, setPreferences] = useState({
     spiciness_level: 0, // default to Mild
     is_vegetarian: false,
@@ -174,4 +174,4 @@ const QuickQuestionary = () => {
   );
 };
 
-export default QuickQuestionary;
+export default QuickQuestionnaire;
