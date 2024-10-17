@@ -29,7 +29,7 @@ function Login() {
         localStorage.setItem('refreshToken', refresh);  // Save refresh token
 
         // Redirect the user to the homepage or another page after successful login
-        window.location.href = '/normalorder';
+        window.location.href = '/quickorder';
     } catch (err) {
         setError('Invalid credentials. Please try again.');
     }
