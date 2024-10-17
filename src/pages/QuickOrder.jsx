@@ -223,6 +223,7 @@ function QuickOrder() {
       </header>
 
       {/* Conditionally render the button or pizza recommendations */}
+      {/* Conditionally render the button or pizza recommendations */}
       {!showPizzas ? (
         <>
           {/* Body 1 (Rule-Based System) */}
@@ -264,32 +265,53 @@ function QuickOrder() {
         // Display the recommended pizzas after fetching
         <div className="pizza-recommendations">
           {pizzas.map((pizza, index) => (
-            <div key={index} className="pizza-item-card">
-              <img src={pizza.image} alt={pizza.name} className="pizza-card-image" />
-              <div className="pizza-card-info">
-                <div className="pizza-item-heading">
-                  <div className="pizza-label">
-                    <h3>{pizza.name}</h3>
-                    <p>{pizza.price} €</p>
+            <div
+              key={index}
+              className="pizza-item-wrapper"
+              style={{
+                border: index === 0 ? '2px solid red' : 'none', // Red border for the first pizza
+                padding: '10px',
+                marginBottom: '10px',
+              }}
+            >
+              {/* Add labels for the pizzas */}
+              <h3 className="pizza-label">
+                {index === 0
+                  ? "Recommended Order"
+                  : index === 1
+                  ? "Alternative 1"
+                  : "Alternative 2"}
+              </h3>
+
+              <div className="pizza-item-card">
+                <img src={pizza.image} alt={pizza.name} className="pizza-card-image" />
+                <div className="pizza-card-info">
+                  <div className="pizza-item-heading">
+                    <div className="pizza-label">
+                      <h3>{pizza.name}</h3>
+                      <p>{pizza.price} €</p>
+                    </div>
                   </div>
-                </div>
-                {/* Star rating system */}
-                <div className="rating-section">
-                  {renderStarRating(pizza.rating, (newRating) => handleRating(pizza.id, newRating))}
-                </div>
-                <div className="pizza-card-buttons">
-                  <button className="more-info-btn" onClick={() => handlePizzaClick(pizza)}>
-                    More Info
-                  </button>
-                  <button className="add-to-cart-btn" onClick={() => handleChoosePizza(pizza.id)}>
-                    Add to Cart
-                  </button>
+                  {/* Star rating system */}
+                  <div className="rating-section">
+                    {renderStarRating(pizza.rating, (newRating) => handleRating(pizza.id, newRating))}
+                  </div>
+                  <div className="pizza-card-buttons">
+                    <button className="more-info-btn" onClick={() => handlePizzaClick(pizza)}>
+                      More Info
+                    </button>
+                    <button className="add-to-cart-btn" onClick={() => handleChoosePizza(pizza.id)}>
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
+
+
       
 
 
