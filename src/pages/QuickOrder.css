@@ -6,6 +6,29 @@
   justify-content: center; /* Center the main content */
 }
 
+.highlighted {
+  background-color: #4CAF50; /* Example highlight color */
+  color: white;
+}
+
+.confirm-button.disabled {
+  opacity: 0.5;
+  pointer-events: none; /* Disable clicks */
+}
+
+.confirm-button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirm-button:hover {
+  background-color: #0056b3;
+}
+
+
 .switch-view-button {
   position: absolute;
   top: 100px;
@@ -116,32 +139,81 @@
   background-color: #e0e0e0;
 }
 
-.pizza-card-image {
-  width: 120px;
-  height: 120px;
+.pizza-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 600px; /* Increase the width of the pizza cards */
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  object-fit: cover;
+  background-color: #fff;
+}
+
+.pizza-card-image {
+  width: 150px; /* Adjust the image size */
+  height: 150px;
+  border-radius: 10px;
 }
 
 .pizza-card-info {
-  flex-grow: 1;
-  margin-left: 20px;
+  flex: 1;
+  padding-left: 20px;
+}
+
+.pizza-item-heading {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.pizza-card-info h3 {
-  margin: 0;
+.pizza-tags img {
+  width: 20px; /* Adjust icon size */
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.pizza-card-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.more-info-btn, .add-to-cart-btn {
+  padding: 8px 12px;
+  margin: 0 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.more-info-btn:hover, .add-to-cart-btn:hover {
+  background-color: #0056b3;
+}
+
+.stars {
+  display: inline-block;
   font-size: 20px;
-  color: #333;
+  cursor: pointer;
+  color: #ccc; /* Default star color */
 }
 
-.pizza-card-info p {
-  margin: 5px 0;
-  color: green;
-  font-size: 16px;
+.star.filled {
+  color: gold; /* Filled star color */
 }
+
+.star {
+  margin-right: 5px;
+  transition: color 0.2s;
+}
+
+.star:hover {
+  color: gold; /* Highlight stars on hover */
+}
+
 
 .big-red-button-container {
   display: flex;
