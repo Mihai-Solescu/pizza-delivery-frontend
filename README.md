@@ -1,3 +1,40 @@
+# Intelligent Pizza Ordering Platform - Frontend
+
+## Overview
+
+This repository contains the frontend web application for the Intelligent Pizza Ordering Platform. It is built using JavaScript with the React framework and interacts with the Django backend via REST API calls. The frontend provides the user interface for Browse the menu, placing orders, managing preferences, and utilizing the intelligent quick-ordering features.
+
+**Technology Stack:**
+* JavaScript
+* React 
+* Axios 
+
+## Features
+
+* **User Interface:** Provides components for all user interactions.
+    * Login/Registration Screen
+    * Menu Browse (Pizzas, Drinks, Sides)
+    * Standard Ordering Process (Cart, Checkout)
+    * Intelligent Quick Ordering Screen (with AI-driven and Rule-Based options)
+    * User Preferences Management
+    * Order History / Status Tracking
+* **API Interaction:** Communicates with the backend REST API to fetch data and perform actions (e.g., place orders, get recommendations).
+* **State Management:** Manages application state (e.g., user session, cart contents, menu data). (May use Context API, Redux, Zustand, etc.)
+* **Responsive Design:** (Assumed) Adapts to different screen sizes.
+
+## Interaction with Backend
+
+The frontend is responsible for the presentation layer. It makes asynchronous requests to the backend API to:
+
+* Authenticate users.
+* Fetch menu data.
+* Submit orders.
+* Retrieve order history and status.
+* Get personalized pizza recommendations for the quick ordering feature.
+* Fetch and update user preferences.
+
+All business logic and data persistence are handled by the backend server.
+
 ### How to Run the Application:
 
 Backend (Django):
